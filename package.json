@@ -1,0 +1,34 @@
+{
+  "name": "dung",
+  "version": "0.0.1",
+  "description": "rot.js roguelike",
+  "main": "main.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "dung"
+  },
+  "keywords": [
+    "roguelike",
+    "rl",
+    "rot-js",
+    "game",
+    "gamedev"
+  ],
+  "author": "Daniel Nakushnov (danieldan0)",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-preset-env": "^1.5.1"
+  },
+  "dependencies": {
+    "rot-js": "^0.6.2"
+  },
+  "presets": [
+    "env"
+  ]
+}
