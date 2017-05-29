@@ -4,9 +4,8 @@
   "description": "rot.js roguelike",
   "main": "main.js",
   "scripts": {
-    "start": "webpack --config webpack.config.js",
     "server": "webpack-dev-server",
-    "build": "webpack"
+    "build": "webpack --config webpack.config.js"
   },
   "repository": {
     "type": "git",
