@@ -1,16 +1,27 @@
 import ROT from 'rot-js'
+import Display from 'display'
+
+var Game = {
+    options: {
+        display: {
+            width: 80,
+            height: 25
+        }
+    },
+    init: function(options) {
+        Display.init(options.display);
+    }
+};
 
 // Credit to Coding.Cookies
 window.onload = function() {
     // Check if rot.js can work on this browser
     if (!ROT.isSupported()) {
         alert("The rot.js library isn't supported by your browser.");
+        throw new Error("The rot.js library isn't supported by your browser.");
     } else {
         // Create a display 80 characters wide and 20 characters tall
-        var display = new ROT.Display({width:80, height:20});
-        var container = display.getContainer();
-        // Add the container to our HTML page
-        document.body.appendChild(container);
+        Game.init();
         var foreground, background, colors;
         for (var i = 0; i < 15; i++) {
             // Calculate the foreground color, getting progressively darker
@@ -23,7 +34,7 @@ window.onload = function() {
             colors = "%c{" + foreground + "}%b{" + background + "}";
             // Draw the text two columns in and at the row specified
             // by i
-            display.drawText(2, i, colors + "Hello, world!");
+            Display.display.drawText(2, i, colors + "Hello, world!");
         }
     }
 }
