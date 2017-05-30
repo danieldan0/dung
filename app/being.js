@@ -1,3 +1,5 @@
+import Entity from 'entity'
+
 var Being = function(visual) {
 	Entity.call(this, visual);
 
