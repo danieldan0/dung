@@ -22,8 +22,8 @@ module.exports = {
   },
   resolve: {
     modules: [
-      path.resolve('./app'),
-      path.resolve('./node_modules')
+      "node_modules",
+      path.resolve(__dirname, "app")
     ]
   }
 };
