@@ -119,13 +119,50 @@ XY.prototype.minus = function (xy) {
 "use strict";
 
 
+var Entity = function Entity(visual) {
+	this._visual = visual;
+	this._xy = null;
+	this._level = null;
+};
+
+Entity.prototype.getVisual = function () {
+	return this._visual;
+};
+
+Entity.prototype.getXY = function () {
+	return this._xy;
+};
+
+Entity.prototype.getLevel = function () {
+	return this._level;
+};
+
+Entity.prototype.setPosition = function (xy, level) {
+	this._xy = xy;
+	this._level = level;
+	return this;
+};
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _entity = __webpack_require__(1);
+
+var _entity2 = _interopRequireDefault(_entity);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var Being = function Being(visual) {
-	Entity.call(this, visual);
+	_entity2.default.call(this, visual);
 
 	this._speed = 100;
 	this._hp = 10;
 };
-Being.extend(Entity);
+Being.extend(_entity2.default);
 
 /**
  * Called by the Scheduler
@@ -155,38 +192,7 @@ Being.prototype.setPosition = function (xy, level) {
 		Game.scheduler.add(this, true);
 	}
 
-	return Entity.prototype.setPosition.call(this, xy, level);
-};
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var Entity = function Entity(visual) {
-	this._visual = visual;
-	this._xy = null;
-	this._level = null;
-};
-
-Entity.prototype.getVisual = function () {
-	return this._visual;
-};
-
-Entity.prototype.getXY = function () {
-	return this._xy;
-};
-
-Entity.prototype.getLevel = function () {
-	return this._level;
-};
-
-Entity.prototype.setPosition = function (xy, level) {
-	this._xy = xy;
-	this._level = level;
-	return this;
+	return _entity2.default.prototype.setPosition.call(this, xy, level);
 };
 
 /***/ }),
@@ -5722,7 +5728,7 @@ for (var p in ROT) {
 "use strict";
 
 
-var _entity = __webpack_require__(2);
+var _entity = __webpack_require__(1);
 
 var _entity2 = _interopRequireDefault(_entity);
 
@@ -5787,7 +5793,7 @@ var _rotJs = __webpack_require__(3);
 
 var _rotJs2 = _interopRequireDefault(_rotJs);
 
-var _being = __webpack_require__(1);
+var _being = __webpack_require__(2);
 
 var _being2 = _interopRequireDefault(_being);
 
@@ -5936,11 +5942,11 @@ var _rotJs = __webpack_require__(3);
 
 var _rotJs2 = _interopRequireDefault(_rotJs);
 
-var _being = __webpack_require__(1);
+var _being = __webpack_require__(2);
 
 var _being2 = _interopRequireDefault(_being);
 
-var _entity = __webpack_require__(2);
+var _entity = __webpack_require__(1);
 
 var _entity2 = _interopRequireDefault(_entity);
 
