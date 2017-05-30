@@ -21,7 +21,7 @@ module.exports = {
     ]
   },
   resolve: {
-    root: [
+    modules: [
       path.resolve('./app'),
       path.resolve('./node_modules')
     ]

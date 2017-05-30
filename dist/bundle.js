@@ -63,11 +63,134 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var XY = function XY(x, y) {
+	this.x = x || 0;
+	this.y = y || 0;
+};
+
+XY.prototype.toString = function () {
+	return this.x + "," + this.y;
+};
+
+XY.prototype.is = function (xy) {
+	return this.x == xy.x && this.y == xy.y;
+};
+
+XY.prototype.dist8 = function (xy) {
+	var dx = xy.x - this.x;
+	var dy = xy.y - this.y;
+	return Math.max(Math.abs(dx), Math.abs(dy));
+};
+
+XY.prototype.dist4 = function (xy) {
+	var dx = xy.x - this.x;
+	var dy = xy.y - this.y;
+	return Math.abs(dx) + Math.abs(dy);
+};
+
+XY.prototype.dist = function (xy) {
+	var dx = xy.x - this.x;
+	var dy = xy.y - this.y;
+	return Math.sqrt(dx * dx + dy * dy);
+};
+
+XY.prototype.plus = function (xy) {
+	return new XY(this.x + xy.x, this.y + xy.y);
+};
+
+XY.prototype.minus = function (xy) {
+	return new XY(this.x - xy.x, this.y - xy.y);
+};
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var Being = function Being(visual) {
+	Entity.call(this, visual);
+
+	this._speed = 100;
+	this._hp = 10;
+};
+Being.extend(Entity);
+
+/**
+ * Called by the Scheduler
+ */
+Being.prototype.getSpeed = function () {
+	return this._speed;
+};
+
+Being.prototype.damage = function (damage) {
+	this._hp -= damage;
+	if (this._hp <= 0) {
+		this.die();
+	}
+};
+
+Being.prototype.act = function () {
+	/* FIXME */
+};
+
+Being.prototype.die = function () {
+	Game.scheduler.remove(this);
+};
+
+Being.prototype.setPosition = function (xy, level) {
+	/* came to a currently active level; add self to the scheduler */
+	if (level != this._level && level == Game.level) {
+		Game.scheduler.add(this, true);
+	}
+
+	return Entity.prototype.setPosition.call(this, xy, level);
+};
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var Entity = function Entity(visual) {
+	this._visual = visual;
+	this._xy = null;
+	this._level = null;
+};
+
+Entity.prototype.getVisual = function () {
+	return this._visual;
+};
+
+Entity.prototype.getXY = function () {
+	return this._xy;
+};
+
+Entity.prototype.getLevel = function () {
+	return this._level;
+};
+
+Entity.prototype.setPosition = function (xy, level) {
+	this._xy = xy;
+	this._level = level;
+	return this;
+};
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {/*
@@ -5590,61 +5713,339 @@ for (var p in ROT) {
 	exports[p] = ROT[p];
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(8)))
 
 /***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rot_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_rot_js__);
-throw new Error("Cannot find module \"display.js\"");
 
 
+var _entity = __webpack_require__(2);
 
-var Game = {
-    options: {
-        display: {
-            width: 80,
-            height: 25
-        }
-    },
-    init: function(options) {
-        __WEBPACK_IMPORTED_MODULE_1_display_js___default.a.init(options.display);
-    }
+var _entity2 = _interopRequireDefault(_entity);
+
+var _xy = __webpack_require__(0);
+
+var _xy2 = _interopRequireDefault(_xy);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Level = function Level() {
+	/* FIXME data structure for storing entities */
+	this._beings = {};
+
+	/* FIXME map data */
+	this._size = new _xy2.default(80, 25);
+	this._map = {};
+
+	this._empty = new _entity2.default({ ch: ".", fg: "#888", bg: null });
 };
 
-// Credit to Coding.Cookies
-window.onload = function() {
-    // Check if rot.js can work on this browser
-    if (!__WEBPACK_IMPORTED_MODULE_0_rot_js___default.a.isSupported()) {
-        alert("The rot.js library isn't supported by your browser.");
-        throw new Error("The rot.js library isn't supported by your browser.");
-    } else {
-        // Create a display 80 characters wide and 20 characters tall
-        Game.init();
-        var foreground, background, colors;
-        for (var i = 0; i < 15; i++) {
-            // Calculate the foreground color, getting progressively darker
-            // and the background color, getting progressively lighter.
-            foreground = __WEBPACK_IMPORTED_MODULE_0_rot_js___default.a.Color.toRGB([255 - (i*20),
-                                          255 - (i*20),
-                                          255 - (i*20)]);
-            background = __WEBPACK_IMPORTED_MODULE_0_rot_js___default.a.Color.toRGB([i*20, i*20, i*20]);
-            // Create the color format specifier.
-            colors = "%c{" + foreground + "}%b{" + background + "}";
-            // Draw the text two columns in and at the row specified
-            // by i
-            __WEBPACK_IMPORTED_MODULE_1_display_js___default.a.display.drawText(2, i, colors + "Hello, world!");
-        }
-    }
-}
+Level.prototype.getSize = function () {
+	return this._size;
+};
 
+Level.prototype.setEntity = function (entity, xy) {
+	/* FIXME remove from old position, draw */
+	if (entity.getLevel() == this) {
+		var oldXY = entity.getXY();
+		delete this._beings[oldXY];
+		if (Game.level == this) {
+			Game.draw(oldXY);
+		}
+	}
+
+	entity.setPosition(xy, this); /* propagate position data to the entity itself */
+
+	/* FIXME set new position, draw */
+	this._beings[xy] = entity;
+	if (Game.level == this) {
+		Game.draw(xy);
+		Game.textBuffer.write("An entity moves to " + xy + ".");
+	}
+};
+
+Level.prototype.getEntityAt = function (xy) {
+	return this._beings[xy] || this._map[xy] || this._empty;
+};
+
+Level.prototype.getBeings = function () {
+	/* FIXME list of all beings */
+	return this._beings;
+};
 
 /***/ }),
-/* 2 */
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _rotJs = __webpack_require__(3);
+
+var _rotJs2 = _interopRequireDefault(_rotJs);
+
+var _being = __webpack_require__(1);
+
+var _being2 = _interopRequireDefault(_being);
+
+var _xy = __webpack_require__(0);
+
+var _xy2 = _interopRequireDefault(_xy);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Player = function Player() {
+	_being2.default.call(this, { ch: "@", fg: "#fff" });
+
+	this._keys = {};
+	this._keys[_rotJs2.default.VK_K] = 0;
+	this._keys[_rotJs2.default.VK_UP] = 0;
+	this._keys[_rotJs2.default.VK_NUMPAD8] = 0;
+	this._keys[_rotJs2.default.VK_U] = 1;
+	this._keys[_rotJs2.default.VK_NUMPAD9] = 1;
+	this._keys[_rotJs2.default.VK_L] = 2;
+	this._keys[_rotJs2.default.VK_RIGHT] = 2;
+	this._keys[_rotJs2.default.VK_NUMPAD6] = 2;
+	this._keys[_rotJs2.default.VK_N] = 3;
+	this._keys[_rotJs2.default.VK_NUMPAD3] = 3;
+	this._keys[_rotJs2.default.VK_J] = 4;
+	this._keys[_rotJs2.default.VK_DOWN] = 4;
+	this._keys[_rotJs2.default.VK_NUMPAD2] = 4;
+	this._keys[_rotJs2.default.VK_B] = 5;
+	this._keys[_rotJs2.default.VK_NUMPAD1] = 5;
+	this._keys[_rotJs2.default.VK_H] = 6;
+	this._keys[_rotJs2.default.VK_LEFT] = 6;
+	this._keys[_rotJs2.default.VK_NUMPAD4] = 6;
+	this._keys[_rotJs2.default.VK_Y] = 7;
+	this._keys[_rotJs2.default.VK_NUMPAD7] = 7;
+
+	this._keys[_rotJs2.default.VK_PERIOD] = -1;
+	this._keys[_rotJs2.default.VK_CLEAR] = -1;
+	this._keys[_rotJs2.default.VK_NUMPAD5] = -1;
+};
+Player.extend(_being2.default);
+
+Player.prototype.act = function () {
+	Game.textBuffer.write("It is your turn, press any relevant key.");
+	Game.textBuffer.flush();
+	Game.engine.lock();
+	window.addEventListener("keydown", this);
+};
+
+Player.prototype.die = function () {
+	_being2.default.prototype.die.call(this);
+	Game.over();
+};
+
+Player.prototype.handleEvent = function (e) {
+	var code = e.keyCode;
+
+	var keyHandled = this._handleKey(e.keyCode);
+
+	if (keyHandled) {
+		window.removeEventListener("keydown", this);
+		Game.engine.unlock();
+	}
+};
+
+Player.prototype._handleKey = function (code) {
+	if (code in this._keys) {
+		Game.textBuffer.clear();
+
+		var direction = this._keys[code];
+		if (direction == -1) {
+			/* noop */
+			/* FIXME show something? */
+			return true;
+		}
+
+		var dir = _rotJs2.default.DIRS[8][direction];
+		var xy = this._xy.plus(new _xy2.default(dir[0], dir[1]));
+
+		this._level.setEntity(this, xy); /* FIXME collision detection */
+		return true;
+	}
+
+	return false; /* unknown key */
+};
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _xy = __webpack_require__(0);
+
+var _xy2 = _interopRequireDefault(_xy);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var TextBuffer = function TextBuffer() {
+	this._data = [];
+	this._options = {
+		display: null,
+		position: new _xy2.default(),
+		size: new _xy2.default()
+	};
+};
+
+TextBuffer.prototype.configure = function (options) {
+	for (var p in options) {
+		this._options[p] = options[p];
+	}
+};
+
+TextBuffer.prototype.clear = function () {
+	this._data = [];
+};
+
+TextBuffer.prototype.write = function (text) {
+	this._data.push(text);
+};
+
+TextBuffer.prototype.flush = function () {
+	var o = this._options;
+	var d = o.display;
+	var pos = o.position;
+	var size = o.size;
+
+	/* clear */
+	for (var i = 0; i < size.x; i++) {
+		for (var j = 0; j < size.y; j++) {
+			d.draw(pos.x + i, pos.y + j);
+		}
+	}
+
+	var text = this._data.join(" ");
+	d.drawText(pos.x, pos.y, text, size.x);
+};
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _rotJs = __webpack_require__(3);
+
+var _rotJs2 = _interopRequireDefault(_rotJs);
+
+var _being = __webpack_require__(1);
+
+var _being2 = _interopRequireDefault(_being);
+
+var _entity = __webpack_require__(2);
+
+var _entity2 = _interopRequireDefault(_entity);
+
+var _level = __webpack_require__(4);
+
+var _level2 = _interopRequireDefault(_level);
+
+var _player = __webpack_require__(5);
+
+var _player2 = _interopRequireDefault(_player);
+
+var _textbuffer = __webpack_require__(6);
+
+var _textbuffer2 = _interopRequireDefault(_textbuffer);
+
+var _xy = __webpack_require__(0);
+
+var _xy2 = _interopRequireDefault(_xy);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Game = {
+	scheduler: null,
+	engine: null,
+	player: null,
+	level: null,
+	display: null,
+	textBuffer: null,
+
+	init: function init() {
+		window.addEventListener("load", this);
+	},
+
+	handleEvent: function handleEvent(e) {
+		switch (e.type) {
+			case "load":
+				window.removeEventListener("load", this);
+
+				this.scheduler = new _rotJs2.default.Scheduler.Speed();
+				this.engine = new _rotJs2.default.Engine(this.scheduler);
+				this.display = new _rotJs2.default.Display({ fontSize: 16 });
+				this.textBuffer = new _textbuffer2.default(this.display);
+				document.body.appendChild(this.display.getContainer());
+				this.player = new _player2.default();
+
+				/* FIXME build a level and position a player */
+				var level = new _level2.default();
+				var size = level.getSize();
+				this._switchLevel(level);
+				this.level.setEntity(this.player, new _xy2.default(Math.round(size.x / 2), Math.round(size.y / 2)));
+
+				this.engine.start();
+				break;
+		}
+	},
+
+	draw: function draw(xy) {
+		var entity = this.level.getEntityAt(xy);
+		var visual = entity.getVisual();
+		this.display.draw(xy.x, xy.y, visual.ch, visual.fg, visual.bg);
+	},
+
+	over: function over() {
+		this.engine.lock();
+		/* FIXME show something */
+	},
+
+	_switchLevel: function _switchLevel(level) {
+		/* remove old beings from the scheduler */
+		this.scheduler.clear();
+
+		this.level = level;
+		var size = this.level.getSize();
+
+		var bufferSize = 3;
+		this.display.setOptions({ width: size.x, height: size.y + bufferSize });
+		this.textBuffer.configure({
+			display: this.display,
+			position: new _xy2.default(0, size.y),
+			size: new _xy2.default(size.x, bufferSize)
+		});
+		this.textBuffer.clear();
+
+		/* FIXME draw a level */
+		var xy = new _xy2.default();
+		for (var i = 0; i < size.x; i++) {
+			xy.x = i;
+			for (var j = 0; j < size.y; j++) {
+				xy.y = j;
+				this.draw(xy);
+			}
+		}
+
+		/* add new beings to the scheduler */
+		var beings = this.level.getBeings();
+		for (var p in beings) {
+			this.scheduler.add(beings[p], true);
+		}
+	}
+};
+
+Game.init();
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -5834,7 +6235,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 3 */
+/* 9 */
 /***/ (function(module, exports) {
 
 var g;
