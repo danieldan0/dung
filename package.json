@@ -2,7 +2,7 @@
   "name": "dung",
   "version": "0.0.1",
   "description": "rot.js roguelike",
-  "main": "main.js",
+  "main": "game.js",
   "scripts": {
     "server": "webpack-dev-server",
     "build": "webpack"

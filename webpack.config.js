@@ -16,7 +16,7 @@ module: {
 }
 
 module.exports = {
-  entry: './app/main.js',
+  entry: './app/game.js',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist')
