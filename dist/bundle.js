@@ -5590,7 +5590,7 @@ for (var p in ROT) {
 	exports[p] = ROT[p];
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(2)))
 
 /***/ }),
 /* 1 */
@@ -5600,17 +5600,31 @@ for (var p in ROT) {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rot_js__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rot_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_rot_js__);
+throw new Error("Cannot find module \"display.js\"");
 
+
+
+var Game = {
+    options: {
+        display: {
+            width: 80,
+            height: 25
+        }
+    },
+    init: function(options) {
+        __WEBPACK_IMPORTED_MODULE_1_display_js___default.a.init(options.display);
+    }
+};
+
+// Credit to Coding.Cookies
 window.onload = function() {
     // Check if rot.js can work on this browser
     if (!__WEBPACK_IMPORTED_MODULE_0_rot_js___default.a.isSupported()) {
         alert("The rot.js library isn't supported by your browser.");
+        throw new Error("The rot.js library isn't supported by your browser.");
     } else {
         // Create a display 80 characters wide and 20 characters tall
-        var display = new __WEBPACK_IMPORTED_MODULE_0_rot_js___default.a.Display({width:80, height:20});
-        var container = display.getContainer();
-        // Add the container to our HTML page
-        document.body.appendChild(container);
+        Game.init();
         var foreground, background, colors;
         for (var i = 0; i < 15; i++) {
             // Calculate the foreground color, getting progressively darker
@@ -5623,7 +5637,7 @@ window.onload = function() {
             colors = "%c{" + foreground + "}%b{" + background + "}";
             // Draw the text two columns in and at the row specified
             // by i
-            display.drawText(2, i, colors + "Hello, world!");
+            __WEBPACK_IMPORTED_MODULE_1_display_js___default.a.display.drawText(2, i, colors + "Hello, world!");
         }
     }
 }
@@ -5631,33 +5645,6 @@ window.onload = function() {
 
 /***/ }),
 /* 2 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 3 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -5844,6 +5831,33 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 process.umask = function() { return 0; };
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
 
 
 /***/ })

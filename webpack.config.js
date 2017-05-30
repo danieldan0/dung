@@ -22,3 +22,9 @@ module.exports = {
     path: path.resolve(__dirname, 'dist')
   }
 };
+
+resolve: {
+  root: [
+    path.resolve('./app')
+  ]
+},
