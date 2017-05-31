@@ -62,7 +62,7 @@ Player.prototype._handleKey = function(code) {
 		Game.textBuffer.clear();
 
 		var direction = this._keys[code];
-		if (direction == -1) { /* noop */
+		if (direction === -1) { /* noop */
 			/* FIXME show something? */
 			return true;
 		}

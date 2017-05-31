@@ -8,7 +8,7 @@ XY.prototype.toString = function() {
 }
 
 XY.prototype.is = function(xy) {
-	return (this.x==xy.x && this.y==xy.y);
+	return (this.x===xy.x && this.y===xy.y);
 }
 
 XY.prototype.dist8 = function(xy) {
