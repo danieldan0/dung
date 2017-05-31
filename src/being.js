@@ -1,4 +1,5 @@
-import Entity from 'entity'
+import Entity from './entity'
+import Game from './game'
 
 var Being = function(visual) {
 	Entity.call(this, visual);
@@ -36,3 +37,5 @@ Being.prototype.setPosition = function(xy, level) {
 
 	return Entity.prototype.setPosition.call(this, xy, level);
 }
+
+export default Being;

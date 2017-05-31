@@ -36,3 +36,5 @@ XY.prototype.plus = function(xy) {
 XY.prototype.minus = function(xy) {
 	return new XY(this.x-xy.x, this.y-xy.y);
 }
+
+export default XY;

@@ -1,5 +1,6 @@
-import Entity from 'entity'
-import XY from 'xy'
+import Entity from './entity'
+import Game from './game'
+import XY from './xy'
 
 var Level = function() {
 	/* FIXME data structure for storing entities */
@@ -42,3 +43,5 @@ Level.prototype.getBeings = function() {
 	/* FIXME list of all beings */
 	return this._beings;
 }
+
+export default Level;
