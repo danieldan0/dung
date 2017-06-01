@@ -1,6 +1,6 @@
 {
-  "name": "test1",
-  "version": "0.1.0",
+  "name": "dung",
+  "version": "0.1.1",
   "homepage": "https://danieldan0.github.io/dung",
   "private": true,
   "devDependencies": {
