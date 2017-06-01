@@ -1,3 +1,3 @@
-import Game from './game';
+import game from './game';
 
-Game.init();
+game.init();

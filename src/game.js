@@ -90,4 +90,5 @@ class Game {
 	}
 }
 
-export default const Game = new Game();
+const game = new Game();
+export default game;
