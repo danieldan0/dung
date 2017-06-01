@@ -17,7 +17,13 @@ https://danieldan0.github.io/dung
 
 # CONTRIBUTING
 
-Install and use this app properly. Remember to test your code. Build game by running `npm run build` in command line(repository should be opened).
+Install and use this app properly.
+
+Remember to test your code.
+
+Build game by running `npm run build` or `yarn run build` in command line(repository should be opened).
+
+Deploy game to https://danieldan0.github.io/dung by running `yarn run deploy` in command line.
 
 # CHANGELOG
 
