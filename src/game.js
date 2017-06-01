@@ -1,24 +1,28 @@
 import ROT from 'rot-js'
-import Being from 'being'
-import Entity from 'entity'
-import Level from 'level'
-import Player from 'player'
-import TextBuffer from 'textbuffer'
-import XY from 'xy'
+import Being from './being'
+import Entity from './entity'
+import Level from './level'
+import Player from './player'
+import TextBuffer from './textbuffer'
+import XY from './xy'
 
-var Game = {
-	scheduler: null,
-	engine: null,
-	player: null,
-	level: null,
-	display: null,
-	textBuffer: null,
+class Game {
+	static scheduler = null
+	static engine = null
+	static player = null
+	static level = null
+	static display = null
+	static textBuffer = null
 
-	init: function() {
+	constructor() {
+
+	}
+
+	init() {
 		window.addEventListener("load", this);
-	},
+	}
 
-	handleEvent: function(e) {
+	handleEvent(e) {
 		switch (e.type) {
 			case "load":
 				window.removeEventListener("load", this);
@@ -39,20 +43,20 @@ var Game = {
 				this.engine.start();
 			break;
 		}
-	},
+	}
 
-	draw: function(xy) {
+	draw(xy) {
 		var entity = this.level.getEntityAt(xy);
 		var visual = entity.getVisual();
 		this.display.draw(xy.x, xy.y, visual.ch, visual.fg, visual.bg);
-	},
+	}
 
-	over: function() {
+	over() {
 		this.engine.lock();
 		/* FIXME show something */
-	},
+	}
 
-	_switchLevel: function(level) {
+	_switchLevel(level) {
 		/* remove old beings from the scheduler */
 		this.scheduler.clear();
 
@@ -86,4 +90,5 @@ var Game = {
 	}
 }
 
-Game.init();
+const game = new Game();
+export default game;

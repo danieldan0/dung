@@ -21,3 +21,5 @@ Entity.prototype.setPosition = function(xy, level) {
 	this._level = level;
 	return this;
 }
+
+export default Entity;

@@ -1,4 +1,5 @@
-import Entity from 'entity'
+import Entity from './entity'
+import Game from './game'
 
 var Being = function(visual) {
 	Entity.call(this, visual);
@@ -30,9 +31,11 @@ Being.prototype.die = function() {
 
 Being.prototype.setPosition = function(xy, level) {
 	/* came to a currently active level; add self to the scheduler */
-	if (level != this._level && level == Game.level) {
+	if (level !== this._level && level === Game.level) {
 		Game.scheduler.add(this, true);
 	}
 
 	return Entity.prototype.setPosition.call(this, xy, level);
 }
+
+export default Being;

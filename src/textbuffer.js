@@ -1,4 +1,4 @@
-import XY from 'xy'
+import XY from './xy'
 
 var TextBuffer = function() {
 	this._data = [];
@@ -37,3 +37,5 @@ TextBuffer.prototype.flush = function() {
 	var text = this._data.join(" ");
 	d.drawText(pos.x, pos.y, text, size.x);
 }
+
+export default TextBuffer;

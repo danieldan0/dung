@@ -1,6 +1,7 @@
 import ROT from 'rot-js'
-import Being from 'being'
-import XY from 'xy'
+import Being from './being'
+import Game from './game'
+import XY from './xy'
 
 var Player = function() {
 	Being.call(this, {ch:"@", fg:"#fff"});
@@ -61,7 +62,7 @@ Player.prototype._handleKey = function(code) {
 		Game.textBuffer.clear();
 
 		var direction = this._keys[code];
-		if (direction == -1) { /* noop */
+		if (direction === -1) { /* noop */
 			/* FIXME show something? */
 			return true;
 		}
@@ -75,3 +76,5 @@ Player.prototype._handleKey = function(code) {
 
 	return false; /* unknown key */
 }
+
+export default Player;
