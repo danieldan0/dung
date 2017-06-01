@@ -6,7 +6,7 @@ import Player from './player'
 import TextBuffer from './textbuffer'
 import XY from './xy'
 
-export default class Game {
+class Game {
 	static scheduler = null
 	static engine = null
 	static player = null
@@ -89,3 +89,5 @@ export default class Game {
 		}
 	}
 }
+
+export default const Game = new Game();
