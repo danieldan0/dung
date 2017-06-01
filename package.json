@@ -1,6 +1,7 @@
 {
   "name": "test1",
   "version": "0.1.0",
+  "homepage": "https://danieldan0.github.io/dung",
   "private": true,
   "devDependencies": {
     "autoprefixer": "7.1.0",
