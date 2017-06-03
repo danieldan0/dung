@@ -22,7 +22,7 @@ export default class TextBuffer {
 		const options = this._options;
 		const [display, position: pos, size] = options;
 
-		/* clear */
+		// clear
 		for (let i = 0; i < size.x; i++) {
 			for (let j = 0; j < size.y; j++) {
 				display.draw(pos.x + i, pos.y + j);

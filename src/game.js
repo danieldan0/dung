@@ -34,7 +34,7 @@ class Game {
 				document.body.appendChild(this.display.getContainer());
 				this.player = new Player();
 
-				/* FIXME build a level and position a player */
+				// FIXME build a level and position a player
 				const level = new Level();
 				const size = level.getSize();
 				this._switchLevel(level);
@@ -53,11 +53,11 @@ class Game {
 
 	over() {
 		this.engine.lock();
-		/* FIXME show something */
+		// FIXME show something
 	}
 
 	_switchLevel(level) {
-		/* remove old beings from the scheduler */
+		// remove old beings from the scheduler
 		this.scheduler.clear();
 
 		this.level = level;
@@ -82,7 +82,7 @@ class Game {
 			}
 		}
 
-		/* add new beings to the scheduler */
+		// add new beings to the scheduler
 		const beings = this.level.getBeings();
 		for (let p in beings) {
 			this.scheduler.add(beings[p], true);

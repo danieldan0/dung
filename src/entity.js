@@ -13,8 +13,7 @@ export default class Entity {
 	getLevel() {
 		return this._level;
 	}
-	static setPosition(xy, level) {
-		// This method is static because we need to access it by super.setPosition() in child classes
+	setPosition(xy, level) {
 		this._xy = xy;
 		this._level = level;
 		return this;

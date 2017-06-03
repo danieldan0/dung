@@ -22,11 +22,11 @@ export default class Being extends Entity {
 		Game.scheduler.remove(this);
 	}
 	setPosition = function(xy, level) {
-		/* came to a currently active level; add self to the scheduler */
+		// came to a currently active level; add self to the scheduler
 		if (level !== this._level && level === Game.level) {
 			Game.scheduler.add(this, true);
 		}
 
-		return super.setPosition(xy, level);
+		return Entity.prototype.setPosition.call(this, xy, level);
 	}
 }

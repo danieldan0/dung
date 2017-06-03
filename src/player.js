@@ -58,18 +58,18 @@ export default class Player extends Being{
 			Game.textBuffer.clear();
 
 			const direction = this._keys[code];
-			if (direction === -1) { /* noop */
-				/* FIXME show something? */
+			if (direction === -1) { // noop
+				// FIXME show something?
 				return true;
 			}
 
 			const dir = ROT.DIRS[8][direction];
 			const xy = this._xy.plus(new XY(dir[0], dir[1]));
 
-			this._level.setEntity(this, xy); /* FIXME collision detection */
+			this._level.setEntity(this, xy); // FIXME collision detection
 			return true;
 		}
 
-		return false; /* unknown key */
+		return false; // unknown key
 	}
 }
