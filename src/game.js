@@ -35,8 +35,8 @@ class Game {
 				this.player = new Player();
 
 				/* FIXME build a level and position a player */
-				var level = new Level();
-				var size = level.getSize();
+				const level = new Level();
+				const size = level.getSize();
 				this._switchLevel(level);
 				this.level.setEntity(this.player, new XY(Math.round(size.x/2), Math.round(size.y/2)));
 
@@ -46,8 +46,8 @@ class Game {
 	}
 
 	draw(xy) {
-		var entity = this.level.getEntityAt(xy);
-		var visual = entity.getVisual();
+		const entity = this.level.getEntityAt(xy);
+		const visual = entity.getVisual();
 		this.display.draw(xy.x, xy.y, visual.ch, visual.fg, visual.bg);
 	}
 
@@ -61,9 +61,9 @@ class Game {
 		this.scheduler.clear();
 
 		this.level = level;
-		var size = this.level.getSize();
+		const size = this.level.getSize();
 
-		var bufferSize = 3;
+		const bufferSize = 3;
 		this.display.setOptions({width:size.x, height:size.y + bufferSize});
 		this.textBuffer.configure({
 			display: this.display,
@@ -73,18 +73,18 @@ class Game {
 		this.textBuffer.clear();
 
 		/* FIXME draw a level */
-		var xy = new XY();
-		for (var i=0;i<size.x;i++) {
+		const xy = new XY();
+		for (let i = 0; i < size.x; i++) {
 			xy.x = i;
-			for (var j=0;j<size.y;j++) {
+			for (let j = 0; j < size.y; j++) {
 				xy.y = j;
 				this.draw(xy);
 			}
 		}
 
 		/* add new beings to the scheduler */
-		var beings = this.level.getBeings();
-		for (var p in beings) {
+		const beings = this.level.getBeings();
+		for (let p in beings) {
 			this.scheduler.add(beings[p], true);
 		}
 	}

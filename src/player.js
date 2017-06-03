@@ -44,9 +44,9 @@ export default class Player extends Being{
 		Game.over();
 	}
 	handleEvent(e) {
-		var code = e.keyCode;
+		const code = e.keyCode;
 
-		var keyHandled = this._handleKey(e.keyCode);
+		const keyHandled = this._handleKey(e.keyCode);
 
 		if (keyHandled) {
 			window.removeEventListener("keydown", this);
@@ -57,14 +57,14 @@ export default class Player extends Being{
 		if (code in this._keys) {
 			Game.textBuffer.clear();
 
-			var direction = this._keys[code];
+			const direction = this._keys[code];
 			if (direction === -1) { /* noop */
 				/* FIXME show something? */
 				return true;
 			}
 
-			var dir = ROT.DIRS[8][direction];
-			var xy = this._xy.plus(new XY(dir[0], dir[1]));
+			const dir = ROT.DIRS[8][direction];
+			const xy = this._xy.plus(new XY(dir[0], dir[1]));
 
 			this._level.setEntity(this, xy); /* FIXME collision detection */
 			return true;

@@ -1,27 +1,24 @@
 export default class XY {
-	constructor(x, y) {
-		this.x = x || 0;
-		this.y = y || 0;
+	constructor(x = 0, y = 0) {
+		this.x = x;
+		this.y = y;
 	}
 	toString() {
-		return this.x+","+this.y;
+		return this.x + "," + this.y;
 	}
 	is(xy) {
-		return (this.x===xy.x && this.y===xy.y);
+		return (this.x === xy.x && this.y === xy.y);
 	}
 	dist8(xy) {
-		var dx = xy.x-this.x;
-		var dy = xy.y-this.y;
+		const [dx, dy] = [xy.x - this.x, xy.y - this.y];
 		return Math.max(Math.abs(dx), Math.abs(dy));
 	}
 	dist4(xy) {
-		var dx = xy.x-this.x;
-		var dy = xy.y-this.y;
+		const [dx, dy] = [xy.x - this.x, xy.y - this.y];
 		return Math.abs(dx) + Math.abs(dy);
 	}
 	dist(xy) {
-		var dx = xy.x-this.x;
-		var dy = xy.y-this.y;
+		const [dx, dy] = [xy.x - this.x, xy.y - this.y];
 		return Math.sqrt(dx*dx+dy*dy);
 	}
 	plus(xy) {
