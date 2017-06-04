@@ -128,7 +128,7 @@ class Game {
 		// Update our current screen, notify it we entered
 		// and then render it
 		this.currentScreen = screen;
-		if (!this.currentScreen !== null) {
+		if (this.currentScreen) {
 			this.currentScreen.enter();
 			this.currentScreen.render(this.display);
 		}
