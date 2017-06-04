@@ -3,6 +3,7 @@ import Being from './being'
 import Entity from './entity'
 import Level from './level'
 import Player from './player'
+import
 import TextBuffer from './textbuffer'
 import XY from './xy'
 
@@ -34,15 +35,37 @@ class Game {
 				document.body.appendChild(this.display.getContainer());
 				this.player = new Player();
 
-				// FIXME build a level and position a player
-				const level = new Level();
-				const size = level.getSize();
-				this._switchLevel(level);
-				this.level.setEntity(this.player, new XY(Math.round(size.x/2), Math.round(size.y/2)));
+				// Create a helper function for binding to an event
+				// and making it send it to the screen
+				var game = this; // So that we don't lose this
+				var bindEventToScreen = function(event) {
+				window.addEventListener(event, function(e) {
+						// When an event is received, send it to the
+						// screen if there is one
+						if (game._currentScreen !== null) {
+							// Send the event type and data to the screen
+							game._currentScreen.handleInput(event, e);
+						}
+					});
+				}
+				// Bind keyboard input events
+				bindEventToScreen('keydown');
+				bindEventToScreen('keyup');
+				bindEventToScreen('keypress');
 
-				this.engine.start();
+				switchScreen(Screen.startScreen);
 			break;
 		}
+	}
+
+	startGame() {
+		// FIXME build a level and position a player
+		const level = new Level();
+		const size = level.getSize();
+		this._switchLevel(level);
+		this.level.setEntity(this.player, new XY(Math.round(size.x/2), Math.round(size.y/2)));
+
+		this.engine.start();
 	}
 
 	draw(xy) {
@@ -86,6 +109,26 @@ class Game {
 		const beings = this.level.getBeings();
 		for (let p in beings) {
 			this.scheduler.add(beings[p], true);
+		}
+	}
+
+	getDisplay() {
+		return this.display;
+	}
+
+	switchScreen(screen) {
+		// If we had a screen before, notify it that we exited
+		if (this.currentScreen !== null) {
+			this.currentScreen.exit();
+		}
+		// Clear the display
+		this.getDisplay().clear();
+		// Update our current screen, notify it we entered
+		// and then render it
+		this.currentScreen = screen;
+		if (!this.currentScreen !== null) {
+			this.currentScreen.enter();
+			this.currentScreen.render(this.display);
 		}
 	}
 }

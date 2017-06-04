@@ -16,7 +16,7 @@ export default class Being extends Entity {
 		if (this._hp <= 0) { this.die(); }
 	}
 	act() {
-		/* FIXME */
+		// FIXME
 	}
 	die() {
 		Game.scheduler.remove(this);
