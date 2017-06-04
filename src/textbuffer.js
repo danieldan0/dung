@@ -20,7 +20,9 @@ export default class TextBuffer {
 	}
 	flush() {
 		const options = this._options;
-		const [display, position: pos, size] = options;
+		const display = options.display;
+		const pos = options.position;
+		const size = options.size;
 
 		// clear
 		for (let i = 0; i < size.x; i++) {
