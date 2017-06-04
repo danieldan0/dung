@@ -3,7 +3,7 @@ import Being from './being'
 import Entity from './entity'
 import Level from './level'
 import Player from './player'
-import
+import Screen from './screens'
 import TextBuffer from './textbuffer'
 import XY from './xy'
 
