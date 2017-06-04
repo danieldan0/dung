@@ -1,6 +1,7 @@
+import ROT from 'rot-js'
 import Game from './game'
 
-Screen = {};
+const Screen = {};
 
 // Define our initial start screen
 Screen.startScreen = {

@@ -14,6 +14,7 @@ class Game {
 	static level = null
 	static display = null
 	static textBuffer = null
+	static currentScreen = null
 
 	constructor() {
 
@@ -53,7 +54,7 @@ class Game {
 				bindEventToScreen('keyup');
 				bindEventToScreen('keypress');
 
-				switchScreen(Screen.startScreen);
+				this.switchScreen(Screen.startScreen);
 			break;
 		}
 	}
