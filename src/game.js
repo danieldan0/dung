@@ -38,14 +38,14 @@ class Game {
 
 				// Create a helper function for binding to an event
 				// and making it send it to the screen
-				var game = this; // So that we don't lose this
-				var bindEventToScreen = function(event) {
-				window.addEventListener(event, function(e) {
+				const game = this; // So that we don't lose this
+				const bindEventToScreen = function(event) {
+					window.addEventListener(event, function(e) {
 						// When an event is received, send it to the
 						// screen if there is one
-						if (game._currentScreen !== null) {
+						if (game.currentScreen !== null) {
 							// Send the event type and data to the screen
-							game._currentScreen.handleInput(event, e);
+							game.currentScreen.handleInput(event, e);
 						}
 					});
 				}
@@ -78,6 +78,7 @@ class Game {
 	over() {
 		this.engine.lock();
 		// FIXME show something
+		this.switchScreen(Screen.loseScreen);
 	}
 
 	_switchLevel(level) {
@@ -119,8 +120,8 @@ class Game {
 
 	switchScreen(screen) {
 		// If we had a screen before, notify it that we exited
-		if (this.currentScreen !== null) {
-			this.currentScreen.exit();
+		if (Game.currentScreen !== null) {
+			Game.currentScreen.exit();
 		}
 		// Clear the display
 		this.getDisplay().clear();
