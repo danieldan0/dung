@@ -70,9 +70,11 @@ class Game {
 	}
 
 	draw(xy) {
+		const tile = this.level.getTileAt(xy);
+		const tileVisual = tile.getVisual();
 		const entity = this.level.getEntityAt(xy);
 		const visual = entity.getVisual();
-		this.display.draw(xy.x, xy.y, visual.ch, visual.fg, visual.bg);
+		this.display.draw(xy.x, xy.y, visual.ch, tileVisual.fg, visual.bg);
 	}
 
 	over() {

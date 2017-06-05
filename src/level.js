@@ -1,6 +1,7 @@
 import Entity from './entity'
 import Game from './game'
 import XY from './xy'
+import generateMap from './map'
 
 export default class Level {
 	constructor() {
@@ -9,7 +10,9 @@ export default class Level {
 
 		// FIXME map data
 		this._size = new XY(80, 25);
-		this._map = {};
+		const mapData = generateMap(80, 25);
+		this._map = mapData.map;
+		this._freeCells = mapData.freeCells;
 
 		this._empty = new Entity({ch:".", fg:"#888", bg:null});
 	}
@@ -36,8 +39,14 @@ export default class Level {
 	getEntityAt(xy) {
 		return this._beings[xy] || this._map[xy] || this._empty;
 	}
+	getTileAt(xy) {
+		return this._map[xy] || this._empty;
+	}
 	getBeings() {
 		// FIXME list of all beings
 		return this._beings;
+	}
+	getFreeCells() {
+		return this._freeCells;
 	}
 }
