@@ -1,4 +1,5 @@
 import Entity from './entity'
+import Game from './game'
 
 export default class Tile extends Entity {
     constructor(type) {
