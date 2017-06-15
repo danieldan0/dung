@@ -3,7 +3,7 @@ import Being from './being'
 import Game from './game'
 import XY from './xy'
 
-export default class Player extends Being{
+export default class Player extends Being {
 	constructor() {
 		super({ch:"@", fg:"#fff"});
 

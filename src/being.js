@@ -27,6 +27,13 @@ export default class Being extends Entity {
 			Game.scheduler.add(this, true);
 		}
 
-		return Entity.prototype.setPosition.call(this, xy, level);
+		if (level.getTileAt(xy).passable) {
+			return Entity.prototype.setPosition.call(this, xy, level);
+		} else {
+			if (typeof level.getTileAt(xy).bump === "function") {
+				level.getTileAt(xy).bump();
+			}
+			return false;
+		}
 	}
 }

@@ -4,16 +4,16 @@ import Game from './game'
 export default class Tile extends Entity {
     constructor(type) {
         // FIXME
-        const tile = this.Types[type];
+        const tile = Tile.Types[type];
         super(tile.visual);
         this.name = tile.name;
         this.passable = tile.passable;
         this.blocksLos = tile.blocksLos;
-        this.prototype.bump = typeof tile.bump ? tile.bump : this.bump;
+        this.bump = tile.bump ? tile.bump : this.bump;
     }
     bump() {
         if(!this.passable){
-            game.textBuffer.write('You cannot move through this ' + this.name + ' no matter how hard you try.');
+            Game.textBuffer.write('You cannot move through this ' + this.name + ' no matter how hard you try.');
             return false;
         }
         return true;
@@ -42,9 +42,9 @@ export default class Tile extends Entity {
                     this.blocksLos = false;
                     this.visual.ch = "'";
                     Game.textBuffer.write('You open the ' + this.name + '.');
-                    return true;
+                    return false;
                 }
-                return false;
+                return true;
             }
         }
     }
