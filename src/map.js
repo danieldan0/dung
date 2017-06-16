@@ -1,6 +1,7 @@
 import ROT from 'rot-js'
 import Entity from './entity'
 import Tile from './tile'
+import XY from './xy'
 
 export default function generateMap(w, h) {
     const digger = new ROT.Map.Digger(w, h);
@@ -8,7 +9,7 @@ export default function generateMap(w, h) {
     let freeCells = [];
 
     const digCallback = function(x, y, value) {
-        const key = x+","+y;
+        const key = new XY(x, y);
         if (value) {
             map[key] = new Tile("wall");
         } else {
