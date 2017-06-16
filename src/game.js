@@ -54,7 +54,7 @@ class Game {
 		const level = new Level();
 		const size = level.getSize();
 		this._switchLevel(level);
-		this.level.setEntity(this.player, new XY(Math.round(size.x/2), Math.round(size.y/2)));
+		this.level.setEntity(this.player, level.getFreeCells().random());
 
 		this.engine.start();
 	}
