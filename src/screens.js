@@ -10,7 +10,10 @@ Screen.startScreen = {
     render: function(display) {
         // Render our prompt to the screen
         display.drawText(1,1, "%c{yellow}Javascript Roguelike");
-        display.drawText(1,2, "Press [Enter] to start!");
+        display.drawText(1,3, "%c{cyan}HELP:");
+        display.drawText(1,4, "%c{yellow}- Use arrows, vi keys or numpad keys to move");
+        display.drawText(1,5, "%c{yellow}- Press 'T' to teleport!");
+        display.drawText(1,7, "Press [Enter] to start!");
     },
     handleInput: function(inputType, inputData) {
         // When [Enter] is pressed, go to the play screen
