@@ -20,19 +20,25 @@ export default class Level {
 		return this._size;
 	}
 	setEntity(entity, xy) {
+		// FIXME remove from old position, draw
+		const oldXY = entity.getXY();
+		if (entity.getLevel() === this) {
+			delete this._beings[oldXY];
+			if (Game.level === this) { Game.draw(oldXY); }
+		}
 		if (entity.setPosition(xy, this)) {
-			// FIXME remove from old position, draw
-			if (entity.getLevel() === this) {
-				const oldXY = entity.getXY();
-				delete this._beings[oldXY];
-				if (Game.level === this) { Game.draw(oldXY); }
-			}
 			entity.setPosition(xy, this); // propagate position data to the entity itself
 			// FIXME set new position, draw
 			this._beings[xy] = entity;
 			if (Game.level === this) {
 				Game.draw(xy);
 				Game.textBuffer.write("An entity moves to " + xy + ".");
+			}
+		} else {
+			if (entity.getLevel() === this) {
+				entity.setPosition(oldXY, this);
+				this._beings[oldXY] = entity;
+				if (Game.level === this) { Game.draw(oldXY); }
 			}
 		}
 	}

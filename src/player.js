@@ -66,7 +66,7 @@ export default class Player extends Being {
 			const dir = ROT.DIRS[8][direction];
 			const xy = this._xy.plus(new XY(dir[0], dir[1]));
 
-			this._level.setEntity(this, xy); // FIXME collision detection
+			this._level.setEntity(this, xy);
 			return true;
 		}
 

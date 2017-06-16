@@ -74,7 +74,7 @@ class Game {
 		const tileVisual = tile.getVisual();
 		const entity = this.level.getEntityAt(xy);
 		const visual = entity.getVisual();
-		this.display.draw(xy.x, xy.y, visual.ch, tileVisual.fg, visual.bg);
+		this.display.draw(xy.x, xy.y, visual.ch, visual.fg, tileVisual.bg);
 	}
 
 	over() {
