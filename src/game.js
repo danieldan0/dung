@@ -21,42 +21,32 @@ class Game {
 	}
 
 	init() {
-		window.addEventListener("load", this);
-	}
+		this.scheduler = new ROT.Scheduler.Speed();
+		this.engine = new ROT.Engine(this.scheduler);
+		this.display = new ROT.Display({fontSize:16});
+		this.textBuffer = new TextBuffer(this.display);
+		document.body.appendChild(this.display.getContainer());
+		this.player = new Player();
 
-	handleEvent(e) {
-		switch (e.type) {
-			case "load":
-				window.removeEventListener("load", this);
-
-				this.scheduler = new ROT.Scheduler.Speed();
-				this.engine = new ROT.Engine(this.scheduler);
-				this.display = new ROT.Display({fontSize:16});
-				this.textBuffer = new TextBuffer(this.display);
-				document.body.appendChild(this.display.getContainer());
-				this.player = new Player();
-
-				// Create a helper function for binding to an event
-				// and making it send it to the screen
-				const game = this; // So that we don't lose this
-				const bindEventToScreen = function(event) {
-					window.addEventListener(event, function(e) {
-						// When an event is received, send it to the
-						// screen if there is one
-						if (game.currentScreen !== null) {
-							// Send the event type and data to the screen
-							game.currentScreen.handleInput(event, e);
-						}
-					});
+		// Create a helper function for binding to an event
+		// and making it send it to the screen
+		const game = this; // So that we don't lose this
+		const bindEventToScreen = function(event) {
+			window.addEventListener(event, function(e) {
+				// When an event is received, send it to the
+				// screen if there is one
+				if (game.currentScreen !== null) {
+					// Send the event type and data to the screen
+					game.currentScreen.handleInput(event, e);
 				}
-				// Bind keyboard input events
-				bindEventToScreen('keydown');
-				bindEventToScreen('keyup');
-				bindEventToScreen('keypress');
-
-				this.switchScreen(Screen.startScreen);
-			break;
+			});
 		}
+		// Bind keyboard input events
+		bindEventToScreen('keydown');
+		bindEventToScreen('keyup');
+		bindEventToScreen('keypress');
+
+		this.switchScreen(Screen.startScreen);
 	}
 
 	startGame() {
