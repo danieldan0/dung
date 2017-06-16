@@ -36,6 +36,8 @@ export default class Player extends Being {
 		this._keys[ROT.VK_PERIOD] = -1;
 		this._keys[ROT.VK_CLEAR] = -1;
 		this._keys[ROT.VK_NUMPAD5] = -1;
+
+		this._keys[ROT.VK_T] = "teleport";
 	}
 	act() {
 		Game.textBuffer.write("It is your turn, press any relevant key.");
@@ -60,18 +62,26 @@ export default class Player extends Being {
 	_handleKey = function(code) {
 		if (code in this._keys) {
 			Game.textBuffer.clear();
+			if (typeof this._keys[code] === "number") {
+				const direction = this._keys[code];
 
-			const direction = this._keys[code];
-			if (direction === -1) { // noop
-				// FIXME show something?
+				if (direction === -1) { // noop
+					// FIXME show something?
+					return true;
+				}
+
+				const dir = ROT.DIRS[8][direction];
+				const xy = this._xy.plus(new XY(dir[0], dir[1]));
+
+				this._level.setEntity(this, xy);
 				return true;
+			} else {
+				switch (this._keys[code]) {
+					case "teleport":
+						this.teleport(this._level);
+						return true;
+				}
 			}
-
-			const dir = ROT.DIRS[8][direction];
-			const xy = this._xy.plus(new XY(dir[0], dir[1]));
-
-			this._level.setEntity(this, xy);
-			return true;
 		}
 
 		return false; // unknown key

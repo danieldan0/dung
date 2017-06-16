@@ -1,5 +1,6 @@
 import Entity from './entity'
 import Game from './game'
+import ROT from 'rot-js'
 
 export default class Being extends Entity {
 	constructor(visual) {
@@ -21,7 +22,7 @@ export default class Being extends Entity {
 	die() {
 		Game.scheduler.remove(this);
 	}
-	setPosition = function(xy, level) {
+	setPosition(xy, level) {
 		// came to a currently active level; add self to the scheduler
 		if (level !== this._level && level === Game.level) {
 			Game.scheduler.add(this, true);
@@ -35,5 +36,8 @@ export default class Being extends Entity {
 			}
 			return false;
 		}
+	}
+	teleport(level) {
+		this._level.setEntity(this, this._level.getFreeCells().random())
 	}
 }
