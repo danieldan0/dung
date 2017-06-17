@@ -21,15 +21,17 @@ export default function generateMap(w, h) {
     const placeDoors = function(x, y) {
         const key = new XY(x, y);
         map[key] = new Tile("door", key);
-        if (key in freeCells) {
-            delete freeCells[key];
+        for (let i = 0; i < freeCells.length; i++) {
+            if (freeCells[i].is(key)) {
+                freeCells.splice(i, 1);
+            }
         }
     }
 
     digger.create(digCallback.bind(this));
     const rooms = digger.getRooms();
     const corridors = digger.getCorridors();
-    for (let i=0; i<rooms.length; i++) {
+    for (let i = 0; i < rooms.length; i++) {
         const room = rooms[i];
         room.getDoors(placeDoors);
     }
