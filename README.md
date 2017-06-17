@@ -29,3 +29,9 @@ Deploy game to https://danieldan0.github.io/dung by running `yarn run deploy` in
 
 28.05.2017
  - Demo created
+
+(... - 17.06.2017)
+ - Many changes:
+  - Dungeon generation
+  - Teleportation
+  - Many bugfixes
