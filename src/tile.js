@@ -2,16 +2,17 @@ import Entity from './entity'
 import Game from './game'
 
 export default class Tile extends Entity {
-    constructor(type) {
+    constructor(type, xy) {
         // FIXME
         const tile = Tile.Types[type];
         super(tile.visual);
+        this._xy = xy;
         this.name = tile.name;
         this.passable = tile.passable;
         this.blocksLos = tile.blocksLos;
         this.bump = tile.bump ? tile.bump : this.bump;
     }
-    bump(xy) {
+    bump() {
         if(!this.passable){
             Game.textBuffer.write('You cannot move through this ' + this.name + ' no matter how hard you try.');
             return false;
@@ -36,12 +37,12 @@ export default class Tile extends Entity {
             visual: {ch: '+', fg: 'yellow', bg: '#222'},
             passable: false,
             blocksLos: true,
-            bump: function(xy){
+            bump: function(){
                 if(!this.passable){
                     this.passable = true;
                     this.blocksLos = false;
                     this._visual.ch = "'";
-                    Game.draw(xy);
+                    Game.draw(this._xy);
                     Game.textBuffer.write('You open the ' + this.name + '.');
                     return false;
                 }

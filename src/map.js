@@ -11,16 +11,16 @@ export default function generateMap(w, h) {
     const digCallback = function(x, y, value) {
         const key = new XY(x, y);
         if (value) {
-            map[key] = new Tile("wall");
+            map[key] = new Tile("wall", key);
         } else {
-            map[key] = new Tile("floor");
+            map[key] = new Tile("floor", key);
             freeCells.push(key);
         }
     }
 
     const placeDoors = function(x, y) {
         const key = new XY(x, y);
-        map[key] = new Tile("door");
+        map[key] = new Tile("door", key);
         if (key in freeCells) {
             delete freeCells[key];
         }
