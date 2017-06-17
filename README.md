@@ -35,3 +35,6 @@ Deploy game to https://danieldan0.github.io/dung by running `yarn run deploy` in
   - Dungeon generation
   - Teleportation
   - Many bugfixes
+
+18.06.2017
+ - Added digging! Now you can dig walls.
