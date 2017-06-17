@@ -32,7 +32,7 @@ export default class Being extends Entity {
 			return Entity.prototype.setPosition.call(this, xy, level);
 		} else {
 			if (typeof level.getTileAt(xy).bump === "function") {
-				level.getTileAt(xy).bump();
+				level.getTileAt(xy).bump(xy);
 			}
 			return false;
 		}

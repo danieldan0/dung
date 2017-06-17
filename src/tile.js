@@ -11,7 +11,7 @@ export default class Tile extends Entity {
         this.blocksLos = tile.blocksLos;
         this.bump = tile.bump ? tile.bump : this.bump;
     }
-    bump() {
+    bump(xy) {
         if(!this.passable){
             Game.textBuffer.write('You cannot move through this ' + this.name + ' no matter how hard you try.');
             return false;
@@ -36,11 +36,12 @@ export default class Tile extends Entity {
             visual: {ch: '+', fg: 'yellow', bg: '#222'},
             passable: false,
             blocksLos: true,
-            bump: function(entity){
+            bump: function(xy){
                 if(!this.passable){
                     this.passable = true;
                     this.blocksLos = false;
-                    this.visual.ch = "'";
+                    this._visual.ch = "'";
+                    Game.draw(xy);
                     Game.textBuffer.write('You open the ' + this.name + '.');
                     return false;
                 }
