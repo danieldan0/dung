@@ -10,7 +10,7 @@ export default class TextBuffer {
 		}
 	}
 	configure(options) {
-		for (var p in options) { this._options[p] = options[p]; }
+		for (let p in options) { this._options[p] = options[p]; }
 	}
 	clear() {
 		this._data = [];
@@ -31,7 +31,7 @@ export default class TextBuffer {
 			}
 		}
 
-		var text = this._data.join(" ");
+		const text = this._data.join(" ");
 		display.drawText(pos.x, pos.y, text, size.x);
 	}
 }

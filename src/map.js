@@ -29,8 +29,8 @@ export default function generateMap(w, h) {
     digger.create(digCallback.bind(this));
     const rooms = digger.getRooms();
     const corridors = digger.getCorridors();
-    for (var i=0; i<rooms.length; i++) {
-        var room = rooms[i];
+    for (let i=0; i<rooms.length; i++) {
+        const room = rooms[i];
         room.getDoors(placeDoors);
     }
     return {map, freeCells};
