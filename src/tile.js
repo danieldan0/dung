@@ -1,5 +1,5 @@
 import Glyph from './glyph'
-import Tiles drom './tile'
+import {Tiles} from './const'
 
 export default class Tile {
     constructor(type) {

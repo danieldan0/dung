@@ -1,9 +1,11 @@
-const DisplayOptions {
+import Glyph from './glyph'
+
+const DisplayOptions = {
     width: 80,
     height: 25
 }
 
-const MapOptions {
+const MapOptions = {
     width: 80,
     height: 25
 }
