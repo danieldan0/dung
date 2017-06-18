@@ -17,6 +17,7 @@
 
 import ROT from 'rot-js'
 import game from './game'
+import GenerateMap from './mapgen'
 
 const Screen = {};
 
@@ -46,14 +47,24 @@ Screen.startScreen = {
 // Define our playing screen
 Screen.playScreen = {
     enter: () => {
+        this.map = GenerateMap();
         console.log("Entered play screen.");
     },
     exit: () => {
         console.log("Exited play screen.");
     },
     render: (display) => {
-        display.drawText(3,5, "%c{red}%b{white}This game is so much fun!");
-        display.drawText(4,6, "Press [Enter] to win, or [Esc] to lose!");
+        // Iterate through all map cells
+        for (var x = 0; x < this.map.width; x++) {
+            for (var y = 0; y < this.map.height; y++) {
+                // Fetch the glyph for the tile and render it to the screen
+                var glyph = this.map.getTile(x, y).glyph;
+                display.draw(x, y,
+                    glyph.chr,
+                    glyph.foreground,
+                    glyph.background);
+            }
+        }
     },
     handleInput: (inputType, inputData) => {
         if (inputType === 'keydown') {

@@ -1,6 +1,6 @@
 import ROT from 'rot-js'
 import Screen from './screens'
-import {ScreenOptions} from './const'
+import {DisplayOptions} from './const'
 
 class Game {
     constructor() {
@@ -8,7 +8,7 @@ class Game {
     }
     init() {
         // Initialize display
-        this.display = new ROT.Display(ScreenOptions);
+        this.display = new ROT.Display(DisplayOptions);
         // Append display to the document (HTML file)
         // This creates an <canvas> in the document
         document.body.appendChild(this.display.getContainer());
