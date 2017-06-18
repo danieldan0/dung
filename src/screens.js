@@ -18,6 +18,7 @@
 import ROT from 'rot-js'
 import game from './game'
 import GenerateMap from './mapgen'
+import {DisplayOptions} from './const'
 
 const Screen = {};
 
@@ -48,18 +49,45 @@ Screen.startScreen = {
 Screen.playScreen = {
     enter: () => {
         this.map = GenerateMap();
+        this.centerX = 0;
+        this.centerX = 0;
+        this.moveCamera = (dX, dY) => {
+            // Positive dX means movement right
+            // negative means movement left
+            // 0 means none
+            this.centerX = Math.max(0,
+            Math.min(this.map.width - 1, this.centerX + dX));
+            // Positive dY means movement down
+            // negative means movement up
+            // 0 means none
+            this.centerY = Math.max(0,
+            Math.min(this.map.height - 1, this.centerY + dY));
+        };
         console.log("Entered play screen.");
     },
     exit: () => {
         console.log("Exited play screen.");
     },
     render: (display) => {
-        // Iterate through all map cells
-        for (var x = 0; x < this.map.width; x++) {
-            for (var y = 0; y < this.map.height; y++) {
+        const screenWidth = DisplayOptions.width;
+        const screenHeight = DisplayOptions.height;
+        // Make sure the x-axis doesn't go to the left of the left bound
+        let topLeftX = Math.max(0, this.centerX - (screenWidth / 2));
+        // Make sure we still have enough space to fit an entire game screen
+        topLeftX = Math.min(topLeftX, this.map.width - screenWidth);
+        // Make sure the y-axis doesn't above the top bound
+        let topLeftY = Math.max(0, this.centerY - (screenHeight / 2));
+        // Make sure we still have enough space to fit an entire game screen
+        topLeftY = Math.min(topLeftY, this.map.height - screenHeight);
+        // Iterate through all visible map cells
+        for (let x = topLeftX; x < topLeftX + screenWidth; x++) {
+            for (let y = topLeftY; y < topLeftY + screenHeight; y++) {
                 // Fetch the glyph for the tile and render it to the screen
+                // at the offset position.
                 var glyph = this.map.getTile(x, y).glyph;
-                display.draw(x, y,
+                display.draw(
+                    x - topLeftX,
+                    y - topLeftY,
                     glyph.chr,
                     glyph.foreground,
                     glyph.background);
@@ -74,6 +102,16 @@ Screen.playScreen = {
                 game.switchScreen(Screen.winScreen);
             } else if (inputData.keyCode === ROT.VK_ESCAPE) {
                 game.switchScreen(Screen.loseScreen);
+            }
+            // Movement
+            if (inputData.keyCode === ROT.VK_LEFT) {
+                this.moveCamera(-1, 0);
+            } else if (inputData.keyCode === ROT.VK_RIGHT) {
+                this.moveCamera(1, 0);
+            } else if (inputData.keyCode === ROT.VK_UP) {
+                this.moveCamera(0, -1);
+            } else if (inputData.keyCode === ROT.VK_DOWN) {
+                this.moveCamera(0, 1);
             }
         }
     }
