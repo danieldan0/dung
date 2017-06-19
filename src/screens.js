@@ -50,18 +50,16 @@ Screen.playScreen = {
     enter: () => {
         this.map = GenerateMap();
         this.centerX = 0;
-        this.centerX = 0;
+        this.centerY = 0;
         this.moveCamera = (dX, dY) => {
             // Positive dX means movement right
             // negative means movement left
             // 0 means none
-            this.centerX = Math.max(0,
-            Math.min(this.map.width - 1, this.centerX + dX));
+            this.centerX = Math.max(0, Math.min(this.map.width - 1, this.centerX + dX));
             // Positive dY means movement down
             // negative means movement up
             // 0 means none
-            this.centerY = Math.max(0,
-            Math.min(this.map.height - 1, this.centerY + dY));
+            this.centerY = Math.max(0, Math.min(this.map.height - 1, this.centerY + dY));
         };
         console.log("Entered play screen.");
     },
