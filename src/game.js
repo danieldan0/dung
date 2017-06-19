@@ -29,8 +29,8 @@ class Game {
         }
         // Bind keyboard input events
         bindEventToScreen('keydown');
-        bindEventToScreen('keyup');
-        bindEventToScreen('keypress');
+        // bindEventToScreen('keyup');
+        // bindEventToScreen('keypress');
         this.switchScreen(Screen.startScreen);
     }
     switchScreen(screen) {
