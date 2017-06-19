@@ -91,6 +91,13 @@ Screen.playScreen = {
                     glyph.background);
             }
         }
+        // Render the cursor
+        display.draw(
+            this._centerX - topLeftX,
+            this._centerY - topLeftY,
+            '@',
+            'white',
+            'black');
     },
     handleInput: (inputType, inputData) => {
         if (inputType === 'keydown') {
