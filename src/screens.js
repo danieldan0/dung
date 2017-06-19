@@ -72,11 +72,11 @@ Screen.playScreen = {
         // Make sure the x-axis doesn't go to the left of the left bound
         let topLeftX = Math.max(0, this.centerX - (screenWidth / 2));
         // Make sure we still have enough space to fit an entire game screen
-        topLeftX = Math.min(topLeftX, this.map.width - screenWidth);
+        topLeftX = Math.floor(Math.min(topLeftX, this.map.width - screenWidth));
         // Make sure the y-axis doesn't above the top bound
         let topLeftY = Math.max(0, this.centerY - (screenHeight / 2));
         // Make sure we still have enough space to fit an entire game screen
-        topLeftY = Math.min(topLeftY, this.map.height - screenHeight);
+        topLeftY = Math.floor(Math.min(topLeftY, this.map.height - screenHeight));
         // Iterate through all visible map cells
         for (let x = topLeftX; x < topLeftX + screenWidth; x++) {
             for (let y = topLeftY; y < topLeftY + screenHeight; y++) {
@@ -93,8 +93,8 @@ Screen.playScreen = {
         }
         // Render the cursor
         display.draw(
-            this._centerX - topLeftX,
-            this._centerY - topLeftY,
+            this.centerX - topLeftX,
+            this.centerY - topLeftY,
             '@',
             'white',
             'black');
