@@ -1,39 +1,36 @@
 import ROT from 'rot-js'
-import Entity from './entity'
 import Tile from './tile'
 import XY from './xy'
 
-export default function generateMap(w, h) {
-    const digger = new ROT.Map.Digger(w, h);
-    let map = {};
-    let freeCells = [];
-
-    const digCallback = function(x, y, value) {
-        const key = new XY(x, y);
-        if (value) {
-            map[key] = new Tile("wall", key);
+export default class Map {
+    constructor(tiles) {
+        this.tiles = tiles;
+        // cache the width and height based
+        // on the length of the dimensions of
+        // the tiles array
+        this.width = tiles.length;
+        this.height = tiles[0].length;
+    }
+    getTile(xy) {
+        // Make sure we are inside the bounds. If we aren't, return
+        // null tile.
+        if (xy.x < 0 || xy.x >= this.width || xy.y < 0 || xy.y >= this.height) {
+            return new Tile("null");
         } else {
-            map[key] = new Tile("floor", key);
-            freeCells.push(key);
+            return this.tiles[xy.x][xy.y] || new Tile("null");
         }
     }
-
-    const placeDoors = function(x, y) {
-        const key = new XY(x, y);
-        map[key] = new Tile("door", key);
-        for (let i = 0; i < freeCells.length; i++) {
-            if (freeCells[i].is(key)) {
-                freeCells.splice(i, 1);
-            }
+    dig(xy) {
+        if (this.getTile(xy).isDiggable) {
+            this.tiles[xy.x][xy.y] = new Tile("floor");
         }
     }
-
-    digger.create(digCallback.bind(this));
-    const rooms = digger.getRooms();
-    const corridors = digger.getCorridors();
-    for (let i = 0; i < rooms.length; i++) {
-        const room = rooms[i];
-        room.getDoors(placeDoors);
+    getRandomFloorTile() {
+        let x, y;
+        do {
+            x = Math.floor(ROT.RNG.getUniform() * this.width);
+            y = Math.floor(ROT.RNG.getUniform() * this.width);
+        } while(this.getTile(new XY(x, y)).type !== "floor");
+        return new XY(x, y);
     }
-    return {map, freeCells};
 }
