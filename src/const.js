@@ -1,5 +1,3 @@
-import Glyph from './glyph'
-
 const DisplayOptions = {
     width: 80,
     height: 25
@@ -12,13 +10,16 @@ const MapOptions = {
 
 const Tiles = {
     "null": {
-        glyph: new Glyph()
     },
     floor: {
-        glyph: new Glyph(".", "#444", "#222")
+        chr: ".",
+        foreground: "#444",
+        background: "#222"
     },
     wall: {
-        glyph: new Glyph("#", "#777", "#2e2e2e")
+        chr: "#",
+        foreground: "#777",
+        background: "#2e2e2e"
     }
 }
 
