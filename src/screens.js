@@ -53,6 +53,36 @@ Screen.playScreen = {
     map: null,
     player: null,
     enter: () => {
+        // Keys for key handling
+        this.keys = {};
+        this.keys[ROT.VK_K] = 0;
+        this.keys[ROT.VK_UP] = 0;
+        this.keys[ROT.VK_NUMPAD8] = 0;
+        this.keys[ROT.VK_U] = 1;
+        this.keys[ROT.VK_NUMPAD9] = 1;
+        this.keys[ROT.VK_PAGE_UP] = 1;
+        this.keys[ROT.VK_L] = 2;
+        this.keys[ROT.VK_RIGHT] = 2;
+        this.keys[ROT.VK_NUMPAD6] = 2;
+        this.keys[ROT.VK_N] = 3;
+        this.keys[ROT.VK_NUMPAD3] = 3;
+        this.keys[ROT.VK_PAGE_DOWN] = 3;
+        this.keys[ROT.VK_J] = 4;
+        this.keys[ROT.VK_DOWN] = 4;
+        this.keys[ROT.VK_NUMPAD2] = 4;
+        this.keys[ROT.VK_B] = 5;
+        this.keys[ROT.VK_NUMPAD1] = 5;
+        this.keys[ROT.VK_END] = 5;
+        this.keys[ROT.VK_H] = 6;
+        this.keys[ROT.VK_LEFT] = 6;
+        this.keys[ROT.VK_NUMPAD4] = 6;
+        this.keys[ROT.VK_Y] = 7;
+        this.keys[ROT.VK_NUMPAD7] = 7;
+        this.keys[ROT.VK_HOME] = 7;
+
+        this.keys[ROT.VK_PERIOD] = -1;
+        this.keys[ROT.VK_CLEAR] = -1;
+        this.keys[ROT.VK_NUMPAD5] = -1;
         this.move = (distance) => {
             const newXY = this.player.xy.plus(distance);
             // Try to move to the new cell
@@ -119,17 +149,19 @@ Screen.playScreen = {
                 game.switchScreen(Screen.loseScreen);
             } else {
                 // Movement
-                if (inputData.keyCode === ROT.VK_LEFT) {
-                    this.move(new XY(-1, 0));
-                } else if (inputData.keyCode === ROT.VK_RIGHT) {
-                    this.move(new XY(1, 0));
-                } else if (inputData.keyCode === ROT.VK_UP) {
-                    this.move(new XY(0, -1));
-                } else if (inputData.keyCode === ROT.VK_DOWN) {
-                    this.move(new XY(0, 1));
+                if (inputData.keyCode in this.keys) {
+            		const direction = this.keys[inputData.keyCode];
+            		if (direction == -1) { /* noop */
+            			/* FIXME show something? */
+            			return true;
+            		}
+
+            		const dir = ROT.DIRS[8][direction];
+            		this.move(new XY(dir[0], dir[1]));
+
+                    // Unlock the engine
+                    this.map.engine.unlock();
                 }
-                // Unlock the engine
-                this.map.engine.unlock();
             }
         }
     }
