@@ -65,11 +65,9 @@ Mixins.EnemyActor = {
             path.push([x, y]);
         }
         astar.compute(this.x, this.y, pathCallback);
-        path.shift(); // remove enemy's position
-        // BUG: path[0] is undefined
-        // x = path[0][0];
-        // y = path[0][1];
-        // this.tryMove(new XY(x, y))
+        x = path[1][0];
+        y = path[1][1];
+        this.tryMove(new XY(x, y))
     }
 }
 
