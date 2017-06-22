@@ -2,7 +2,7 @@ import Mixins from './mixins'
 
 // Player template
 export const PlayerTemplate = {
-    character: '@',
+    chr: '@',
     foreground: 'white',
     background: 'black',
     mixins: [Mixins.Moveable]
