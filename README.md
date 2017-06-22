@@ -38,3 +38,9 @@ Deploy game to https://danieldan0.github.io/dung by running `yarn run deploy` in
 
 18.06.2017
  - Added digging! Now you can dig walls.
+
+(... - 23.06.2017)
+ - This roguelike has been rewritten.
+ - Removed teleportation :(
+ - Added enemy
+ - Added fungi
