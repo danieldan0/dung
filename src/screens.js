@@ -53,15 +53,14 @@ Screen.playScreen = {
     map: null,
     player: null,
     enter: () => {
-        this.map = GenerateMap();
-        this.centerXY = new XY();
         this.move = (distance) => {
             const newXY = this.player.xy.plus(distance);
             // Try to move to the new cell
             this.player.tryMove(newXY, this.map);
         };
         this.player = new Entity(PlayerTemplate);
-        this.player.xy = this.map.getRandomFloorTile();
+        this.map = GenerateMap(this.player);
+        this.map.engine.start();
         console.log("Entered play screen.");
     },
     exit: () => {
@@ -92,13 +91,23 @@ Screen.playScreen = {
                     tile.background);
             }
         }
-        // Render the cursor
-        display.draw(
-            this.player.xy.x - topLeftX,
-            this.player.xy.y - topLeftY,
-            this.player.chr,
-            this.player.foreground,
-            this.player.background);
+        // Render the entities
+        const entities = this.map.entities;
+        for (var i = 0; i < entities.length; i++) {
+            var entity = entities[i];
+            // Only render the entity if they would show up on the screen
+            if (entity.xy.x >= topLeftX && entity.xy.y >= topLeftY &&
+                entity.xy.x < topLeftX + screenWidth &&
+                entity.xy.y < topLeftY + screenHeight) {
+                display.draw(
+                    entity.xy.x - topLeftX,
+                    entity.xy.y - topLeftY,
+                    entity.chr,
+                    entity.foreground,
+                    entity.background
+        );
+    }
+}
     },
     handleInput: (inputType, inputData) => {
         if (inputType === 'keydown') {
@@ -108,16 +117,19 @@ Screen.playScreen = {
                 game.switchScreen(Screen.winScreen);
             } else if (inputData.keyCode === ROT.VK_ESCAPE) {
                 game.switchScreen(Screen.loseScreen);
-            }
-            // Movement
-            if (inputData.keyCode === ROT.VK_LEFT) {
-                this.move(new XY(-1, 0));
-            } else if (inputData.keyCode === ROT.VK_RIGHT) {
-                this.move(new XY(1, 0));
-            } else if (inputData.keyCode === ROT.VK_UP) {
-                this.move(new XY(0, -1));
-            } else if (inputData.keyCode === ROT.VK_DOWN) {
-                this.move(new XY(0, 1));
+            } else {
+                // Movement
+                if (inputData.keyCode === ROT.VK_LEFT) {
+                    this.move(new XY(-1, 0));
+                } else if (inputData.keyCode === ROT.VK_RIGHT) {
+                    this.move(new XY(1, 0));
+                } else if (inputData.keyCode === ROT.VK_UP) {
+                    this.move(new XY(0, -1));
+                } else if (inputData.keyCode === ROT.VK_DOWN) {
+                    this.move(new XY(0, 1));
+                }
+                // Unlock the engine
+                this.map.engine.unlock();
             }
         }
     }

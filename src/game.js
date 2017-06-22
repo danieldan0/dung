@@ -20,10 +20,6 @@ class Game {
                 if (this.currentScreen !== null) {
                     // Send the event type and data to the screen
                     this.currentScreen.handleInput(event, e);
-                    // Clear the screen
-                    this.display.clear();
-                    // Render the screen
-                    this.currentScreen.render(this.display);
                 }
             });
         }
@@ -45,8 +41,14 @@ class Game {
         this.currentScreen = screen;
         if (this.currentScreen) {
             this.currentScreen.enter();
-            this.currentScreen.render(this.display);
+            this.refresh();
         }
+    }
+    refresh() {
+        // Clear the screen
+        this.display.clear();
+        // Render the screen
+        this.currentScreen.render(this.display);
     }
 }
 

@@ -5,5 +5,11 @@ export const PlayerTemplate = {
     chr: '@',
     foreground: 'white',
     background: 'black',
-    mixins: [Mixins.Moveable]
+    mixins: [Mixins.Moveable, Mixins.PlayerActor]
+}
+
+export const FungusTemplate = {
+    chr: 'F',
+    foreground: 'green',
+    mixins: [Mixins.FungusActor]
 }

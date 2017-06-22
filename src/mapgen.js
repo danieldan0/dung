@@ -3,7 +3,7 @@ import Map from './map'
 import {MapOptions} from './const'
 import Tile from './tile'
 
-export default function GenerateMap() {
+export default function GenerateMap(player) {
     let map = [];
     for (let x = 0; x < MapOptions.width; x++) {
         // Create the nested array for the y values
@@ -23,5 +23,5 @@ export default function GenerateMap() {
         }
     });
     // Create our map from the tiles
-    return new Map(map);
+    return new Map(map, player);
 }
