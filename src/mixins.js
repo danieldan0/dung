@@ -22,4 +22,12 @@ Mixins.Moveable = {
     }
 }
 
+Mixins.Teleportable = {
+    name: 'Teleportable',
+    teleport(map) {
+        this.xy = map.getRandomFloorTile();
+        return true;
+    }
+}
+
 export default Mixins;

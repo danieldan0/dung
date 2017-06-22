@@ -14,12 +14,14 @@ const Tiles = {
     floor: {
         chr: ".",
         foreground: "#444",
-        background: "#222"
+        background: "#222",
+        isWalkable: true
     },
     wall: {
         chr: "#",
         foreground: "#777",
-        background: "#2e2e2e"
+        background: "#2e2e2e",
+        isDiggable: true
     }
 }
 

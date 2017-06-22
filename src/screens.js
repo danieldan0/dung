@@ -55,7 +55,7 @@ Screen.playScreen = {
     enter: () => {
         this.map = GenerateMap();
         this.centerXY = new XY();
-        this.moveCamera = (distance) => {
+        this.move = (distance) => {
             const newXY = this.player.xy.plus(distance);
             // Try to move to the new cell
             this.player.tryMove(newXY, this.map);
@@ -111,13 +111,13 @@ Screen.playScreen = {
             }
             // Movement
             if (inputData.keyCode === ROT.VK_LEFT) {
-                this.moveCamera(new XY(-1, 0));
+                this.move(new XY(-1, 0));
             } else if (inputData.keyCode === ROT.VK_RIGHT) {
-                this.moveCamera(new XY(1, 0));
+                this.move(new XY(1, 0));
             } else if (inputData.keyCode === ROT.VK_UP) {
-                this.moveCamera(new XY(0, -1));
+                this.move(new XY(0, -1));
             } else if (inputData.keyCode === ROT.VK_DOWN) {
-                this.moveCamera(new XY(0, 1));
+                this.move(new XY(0, 1));
             }
         }
     }
