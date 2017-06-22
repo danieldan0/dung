@@ -55,19 +55,17 @@ Mixins.EnemyActor = {
     act: function() {
         let x = this.map.entities[0].xy.x;
         let y = this.map.entities[0].xy.y;
-        const passableCallback = (x, y) => {
-            return (this.map.getTile(new XY(x, y)).isWalkable);
-        }
-        const astar = new ROT.Path.AStar(x, y, passableCallback, {topology:4});
+        let passableCallback = (x, y) => {
+            return this.map.getTile(new XY(x, y)).isWalkable // && this.map.getEntityAt(new XY(x, y)) <-- this piece of code doesn't work :(
+        };
+        const astar = new ROT.Path.AStar(x, y, passableCallback);
 
         let path = [];
-        const pathCallback = (x, y) => {
-            path.push([x, y]);
-        }
-        astar.compute(this.x, this.y, pathCallback);
-        x = path[1][0];
-        y = path[1][1];
-        this.tryMove(new XY(x, y))
+        let pathCallback = (x, y) => path.push(new XY(x, y));
+        astar.compute(this.xy.x, this.xy.y, pathCallback);
+        x = path[1].x;
+        y = path[1].y;
+        this.tryMove(new XY(x, y), this.map);
     }
 }
 

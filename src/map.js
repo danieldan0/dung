@@ -20,7 +20,7 @@ export default class Map {
         // add the player
         this.addEntityAtRandomPosition(player);
         // add random fungi
-        for (var i = 0; i < 100; i++) {
+        for (var i = 0; i < 50; i++) {
             this.addEntityAtRandomPosition(new Entity(FungusTemplate));
         }
         // add enemy

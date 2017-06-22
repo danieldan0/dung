@@ -4,8 +4,8 @@ const DisplayOptions = {
 }
 
 const MapOptions = {
-    width: 100,
-    height: 100
+    width: 80,
+    height: 25
 }
 
 const Tiles = {
