@@ -151,7 +151,7 @@ Screen.playScreen = {
                 // Movement
                 if (inputData.keyCode in this.keys) {
             		const direction = this.keys[inputData.keyCode];
-            		if (direction == -1) { /* noop */
+            		if (direction === -1) { /* noop */
             			/* FIXME show something? */
             			return true;
             		}
