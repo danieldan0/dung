@@ -13,3 +13,9 @@ export const FungusTemplate = {
     foreground: 'green',
     mixins: [Mixins.FungusActor]
 }
+
+export const EnemyTemplate = {
+    chr: '☹',
+    foreground: 'red',
+    mixins: [Mixins.Moveable, Mixins.EnemyActor]
+}

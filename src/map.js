@@ -2,7 +2,7 @@ import ROT from 'rot-js'
 import Tile from './tile'
 import XY from './xy'
 import Entity from './entity'
-import {FungusTemplate} from './entities'
+import {FungusTemplate, EnemyTemplate} from './entities'
 
 export default class Map {
     constructor(tiles, player) {
@@ -20,9 +20,11 @@ export default class Map {
         // add the player
         this.addEntityAtRandomPosition(player);
         // add random fungi
-        for (var i = 0; i < 1000; i++) {
+        for (var i = 0; i < 100; i++) {
             this.addEntityAtRandomPosition(new Entity(FungusTemplate));
         }
+        // add enemy
+        this.addEntityAtRandomPosition(new Entity(EnemyTemplate));
     }
     getTile(xy) {
         // Make sure we are inside the bounds. If we aren't, return
