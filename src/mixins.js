@@ -3,6 +3,7 @@ import XY from './xy'
 import game from './game'
 import Entity from './entity'
 import {FungusTemplate} from './entities'
+import Screen from './screens'
 
 // Create our Mixins namespace
 const Mixins = {};
@@ -51,6 +52,10 @@ Mixins.Destructible = {
         this.hp -= damage;
         // If have 0 or less HP, then remove ourselves from the map
         if (this.hp <= 0) {
+            if (this.hasMixin("PlayerActor")) { // If ourself is player
+                this.map.engine.lock();
+                game.switchScreen(Screen.loseScreen); // Show Game Over screen
+            }
             this.map.removeEntity(this);
         }
     }
@@ -120,6 +125,9 @@ Mixins.EnemyActor = {
     name: 'EnemyActor',
     groupName: 'Actor',
     act: function() {
+        if (!this.map.entities[0]) {
+            return;
+        }
         let x = this.map.entities[0].xy.x;
         let y = this.map.entities[0].xy.y;
         let passableCallback = (x, y) => this.map.getTile(new XY(x, y)).isWalkable // this.map.isEmptyFloor(new XY(x, y));
