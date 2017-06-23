@@ -89,8 +89,16 @@ Mixins.FungusActor = {
     groupName: 'Actor',
     init: function() {
         this.growthsRemaining = 5;
+        this.lifeTurns = 1000;
     },
     act: function() {
+        this.lifeTurns--;
+        if (this.lifeTurns === 100) {
+            this.foreground = "goldenrod";
+        }
+        if (this.lifeTurns <= 0) {
+            this.map.removeEntity(this); // fungi die if they are too old
+        }
         if (this.growthsRemaining <= 0 || Math.random() > 0.02) {
             return;
         }
