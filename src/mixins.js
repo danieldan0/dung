@@ -1,6 +1,8 @@
 import ROT from 'rot-js'
 import XY from './xy'
 import game from './game'
+import Entity from './entity'
+import {FungusTemplate} from './entities'
 
 // Create our Mixins namespace
 const Mixins = {};
@@ -80,7 +82,38 @@ Mixins.PlayerActor = {
 Mixins.FungusActor = {
     name: 'FungusActor',
     groupName: 'Actor',
-    act: function() { }
+    init: function() {
+        this.growthsRemaining = 5;
+    },
+    act: function() {
+        if (this.growthsRemaining <= 0 || Math.random() > 0.02) {
+            return;
+        }
+        // Generate the coordinates of a random adjacent square by
+        // generating an offset between [-1, 0, 1] for both the x and
+        // y directions. To do this, we generate a number from 0-2 and then
+        // subtract 1.
+        const xyOffset = new XY(Math.floor(Math.random() * 3) - 1,
+                                Math.floor(Math.random() * 3) - 1);
+
+        // Make sure we aren't trying to spawn on the same tile as us
+        if (xyOffset.is(new XY())) {
+            return;
+        }
+
+        const xyLoc = this.xy.plus(xyOffset);
+
+        // Check if we can actually spawn at that location, and if so
+        // then we grow!
+        if (!this.map.isEmptyFloor(xyLoc)) {
+            return;
+        }
+
+        const entity = new Entity(FungusTemplate);
+        entity.xy = xyLoc;
+        this.map.addEntity(entity);
+        this.growthsRemaining--;
+    }
 }
 
 Mixins.EnemyActor = {
