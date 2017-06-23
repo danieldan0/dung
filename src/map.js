@@ -45,8 +45,7 @@ export default class Map {
         do {
             x = Math.floor(ROT.RNG.getUniform() * this.width);
             y = Math.floor(ROT.RNG.getUniform() * this.width);
-        } while(this.getTile(new XY(x, y)).type !== "floor" ||
-                this.getEntityAt(new XY(x, y)));
+        } while(!this.isEmptyFloor(new XY(x, y)));
         return new XY(x, y);
     }
     isInBounds(xy) {
@@ -78,5 +77,22 @@ export default class Map {
     addEntityAtRandomPosition(entity) {
         entity.xy = this.getRandomFloorTile();
         this.addEntity(entity);
+    }
+    isEmptyFloor(xy) {
+        // Check if the tile is floor and also has no entity
+        return this.getTile(xy).type === "floor" && !this.getEntityAt(xy);
+    }
+    removeEntity(entity) {
+        // Find the entity in the list of entities if it is present
+        for (var i = 0; i < this.entities.length; i++) {
+            if (this.entities[i] === entity) {
+                this.entities.splice(i, 1);
+                break;
+            }
+        }
+        // If the entity is an actor, remove them from the scheduler
+        if (entity.hasMixin('Actor')) {
+            this.scheduler.remove(entity);
+        }
     }
 }

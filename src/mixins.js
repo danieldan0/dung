@@ -10,10 +10,19 @@ Mixins.Moveable = {
     name: 'Moveable',
     tryMove: function(xy, map) {
         const tile = map.getTile(xy);
-        // If an entity was present at the tile, then we
-        // can't move there
-        if (map.getEntityAt(xy)) {
-            return false;
+        // If an entity was present at the tile
+        const target = map.getEntityAt(xy);
+        if (target) {
+            // If we are an attacker, try to attack
+            // the target
+            if (this.hasMixin('Attacker')) {
+                this.attack(target);
+                return true;
+            } else {
+                // If not nothing we can do, but we can't
+                // move to the tile
+                return false;
+            }
         }
         // Check if we can walk on the tile
         // and if so simply walk onto it
@@ -28,6 +37,31 @@ Mixins.Moveable = {
             return true;
         }
         return false;
+    }
+}
+
+Mixins.Destructible = {
+    name: 'Destructible',
+    init: function() {
+        this.hp = 1;
+    },
+    takeDamage: function(attacker, damage) {
+        this.hp -= damage;
+        // If have 0 or less HP, then remove ourselves from the map
+        if (this.hp <= 0) {
+            this.map.removeEntity(this);
+        }
+    }
+}
+
+Mixins.SimpleAttacker = {
+    name: 'SimpleAttacker',
+    groupName: 'Attacker',
+    attack: function(target) {
+        // Only remove the entity if they were attackable
+        if (target.hasMixin('Destructible')) {
+            target.takeDamage(this, 1);
+        }
     }
 }
 
@@ -55,9 +89,7 @@ Mixins.EnemyActor = {
     act: function() {
         let x = this.map.entities[0].xy.x;
         let y = this.map.entities[0].xy.y;
-        let passableCallback = (x, y) => {
-            return this.map.getTile(new XY(x, y)).isWalkable // && this.map.getEntityAt(new XY(x, y)) <-- this piece of code doesn't work :(
-        };
+        let passableCallback = (x, y) => this.map.getTile(new XY(x, y)).isWalkable // this.map.isEmptyFloor(new XY(x, y));
         const astar = new ROT.Path.AStar(x, y, passableCallback);
 
         let path = [];
