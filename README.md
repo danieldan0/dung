@@ -44,3 +44,8 @@ Deploy game to https://danieldan0.github.io/dung by running `yarn run deploy` in
  - Removed teleportation :(
  - Added enemy
  - Added fungi
+
+24.06.2017
+ - Added simple combat system
+ - Added fungi growing
+ - Added fungi aging
