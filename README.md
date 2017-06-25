@@ -49,3 +49,8 @@ Deploy game to https://danieldan0.github.io/dung by running `yarn run deploy` in
  - Added simple combat system
  - Added fungi growing
  - Added fungi aging
+
+25.06.2017
+ - Added more advanced combat system
+ - Added basic UI
+ - Added message system
