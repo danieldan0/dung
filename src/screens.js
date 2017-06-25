@@ -129,7 +129,7 @@ Screen.playScreen = {
         const entities = this.map.entities;
         for (let i = 0; i < entities.length; i++) {
             const entity = entities[i];
-            const tile = this.map.getTile(new XY(x, y));
+            const tile = this.map.getTile(entity.xy);
             // Only render the entity if they would show up on the screen
             if (entity.xy.x >= topLeftX && entity.xy.y >= topLeftY &&
                 entity.xy.x < topLeftX + screenWidth &&

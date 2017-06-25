@@ -4,7 +4,6 @@ import Mixins from './mixins'
 export const PlayerTemplate = {
     chr: '@',
     foreground: 'white',
-    background: 'black',
     maxHp: 40,
     attackValue: "2d6",
     mixins: [Mixins.Moveable, Mixins.PlayerActor,
