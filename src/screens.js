@@ -127,8 +127,9 @@ Screen.playScreen = {
         }
         // Render the entities
         const entities = this.map.entities;
-        for (var i = 0; i < entities.length; i++) {
-            var entity = entities[i];
+        for (let i = 0; i < entities.length; i++) {
+            const entity = entities[i];
+            const tile = this.map.getTile(new XY(x, y));
             // Only render the entity if they would show up on the screen
             if (entity.xy.x >= topLeftX && entity.xy.y >= topLeftY &&
                 entity.xy.x < topLeftX + screenWidth &&
@@ -138,7 +139,7 @@ Screen.playScreen = {
                     entity.xy.y - topLeftY,
                     entity.chr,
                     entity.foreground,
-                    entity.background
+                    tile.background
         );
         // Get the messages in the player's queue and render them
         const messages = this.player.messages;
@@ -219,7 +220,7 @@ Screen.loseScreen = {
     },
     render: (display) => {
         // Render our prompt to the screen
-        for (var i = 0; i < 22; i++) {
+        for (let i = 0; i < 22; i++) {
             display.drawText(2, i + 1, "%b{red}You lose! :(");
         }
     },

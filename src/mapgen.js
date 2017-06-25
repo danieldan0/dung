@@ -9,7 +9,7 @@ export default function GenerateMap(player) {
         // Create the nested array for the y values
         map.push([]);
         // Add all the tiles
-        for (var y = 0; y < MapOptions.height; y++) {
+        for (let y = 0; y < MapOptions.height; y++) {
             map[x].push(new Tile("null"));
         }
     }
@@ -23,7 +23,7 @@ export default function GenerateMap(player) {
         }
     });
     const rooms = generator.getRooms();
-    for (var i = 0; i < rooms.length; i++) {
+    for (let i = 0; i < rooms.length; i++) {
         rooms[i].getDoors((x, y) => { if (ROT.RNG.getUniform() >= 0.5) { map[x][y] = new Tile("door") } })
     }
     // Create our map from the tiles
