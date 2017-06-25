@@ -54,3 +54,4 @@ Deploy game to https://danieldan0.github.io/dung by running `yarn run deploy` in
  - Added more advanced combat system
  - Added basic UI
  - Added message system
+ - Added doors
