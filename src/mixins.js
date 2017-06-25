@@ -4,6 +4,8 @@ import game from './game'
 import Entity from './entity'
 import {FungusTemplate} from './entities'
 import Screen from './screens'
+import dice from 'dice.js'
+import {sendMessage, sendMessageNearby} from './msg'
 
 // Create our Mixins namespace
 const Mixins = {};
@@ -45,16 +47,23 @@ Mixins.Moveable = {
 
 Mixins.Destructible = {
     name: 'Destructible',
-    init: function() {
-        this.hp = 1;
+    init: function(template = {"maxHp": 10, "defenseValue": 0}) {
+        this.maxHp = template["maxHp"] || 10;
+        // We allow taking in health from the template incase we want
+        // the entity to start with a different amount of HP than the
+        // max specified.
+        this.hp = template["hp"] || this.maxHp;
+        this.defenseValue = template["defenseValue"] || 0;
     },
     takeDamage: function(attacker, damage) {
         this.hp -= damage;
         // If have 0 or less HP, then remove ourselves from the map
         if (this.hp <= 0) {
+            sendMessage(attacker, 'You kill the %s!', [this.name]);
+            sendMessage(this, 'You die!');
             if (this.hasMixin("PlayerActor")) { // If ourself is player
                 this.map.engine.lock();
-                game.switchScreen(Screen.loseScreen); // Show Game Over screen
+                // game.switchScreen(Screen.loseScreen); // Show Game Over screen
             }
             this.map.removeEntity(this);
         }
@@ -72,6 +81,25 @@ Mixins.SimpleAttacker = {
     }
 }
 
+Mixins.Attacker = {
+    name: 'Attacker',
+    groupName: 'Attacker',
+    init: function(template = {"attackValue": "1d1"}) {
+        this.attackValue = template["attackValue"] || "1d1";
+    },
+    attack: function(target) {
+        // Only remove the entity if they were attackable
+        if (target.hasMixin('Destructible')) {
+            const damage = Math.max(0, dice.roll(this.attackValue) - target.defenseValue);
+            sendMessage(this, 'You strike the %s for %d damage!',
+                        [target.name, damage]);
+            sendMessage(target, 'The %s strikes you for %d damage!',
+                        [this.name, damage]);
+            target.takeDamage(this, damage);
+        }
+    }
+}
+
 Mixins.PlayerActor = {
     name: 'PlayerActor',
     groupName: 'Actor',
@@ -81,6 +109,8 @@ Mixins.PlayerActor = {
         // Lock the engine and wait asynchronously
         // for the player to press a key.
         this.map.engine.lock();
+        // Clear the message queue
+        this.clearMessages();
     }
 }
 
@@ -126,6 +156,9 @@ Mixins.FungusActor = {
         entity.xy = xyLoc;
         this.map.addEntity(entity);
         this.growthsRemaining--;
+        // Send a message nearby!
+        sendMessageNearby(this.map, entity.xy,
+                          'The fungus is spreading!');
     }
 }
 
@@ -152,9 +185,22 @@ Mixins.EnemyActor = {
 
 Mixins.Teleportable = {
     name: 'Teleportable',
-    teleport(map) {
+    teleport: function(map) {
         this.xy = map.getRandomFloorTile();
         return true;
+    }
+}
+
+Mixins.MessageRecipient = {
+    name: 'MessageRecipient',
+    init: function(template) {
+        this.messages = [];
+    },
+    receiveMessage: function(message) {
+        this.messages.push(message);
+    },
+    clearMessages: function() {
+        this.messages = [];
     }
 }
 

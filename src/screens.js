@@ -22,6 +22,10 @@ import {DisplayOptions} from './const'
 import XY from './xy'
 import Entity from './entity'
 import {PlayerTemplate} from './entities'
+import sprintfjs from 'sprintf-js'
+
+const vsprintf = sprintfjs.vsprintf;
+const sprintf = sprintfjs.sprintf;
 
 const Screen = {};
 
@@ -136,6 +140,19 @@ Screen.playScreen = {
                     entity.foreground,
                     entity.background
         );
+        // Get the messages in the player's queue and render them
+        const messages = this.player.messages;
+        for (let i = 0; i < messages.length; i++) {
+            // Draw each message, adding the number of lines
+            display.drawText(
+                0,
+                i,
+                messages[i]
+            );
+        }
+        // Render player HP
+        const stats = vsprintf('HP: %d/%d ', [this.player.hp, this.player.maxHp]);
+        display.drawText(0, DisplayOptions.height - 1, stats);
     }
 }
     },

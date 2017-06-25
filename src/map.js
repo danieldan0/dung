@@ -84,7 +84,7 @@ export default class Map {
     }
     removeEntity(entity) {
         // Find the entity in the list of entities if it is present
-        for (var i = 0; i < this.entities.length; i++) {
+        for (let i = 0; i < this.entities.length; i++) {
             if (this.entities[i] === entity) {
                 this.entities.splice(i, 1);
                 break;
@@ -94,5 +94,23 @@ export default class Map {
         if (entity.hasMixin('Actor')) {
             this.scheduler.remove(entity);
         }
+    }
+    getEntitiesWithinRadius = function(centerXY, radius) {
+        let results = [];
+        // Determine our bounds
+        const leftX = centerXY.x - radius;
+        const rightX = centerXY.x + radius;
+        const topY = centerXY.y - radius;
+        const bottomY = centerXY.y + radius;
+        // Iterate through our entities, adding any which are within the bounds
+        for (let i = 0; i < this.entities.length; i++) {
+            if (this.entities[i].xy.x >= leftX &&
+                this.entities[i].xy.x <= rightX &&
+                this.entities[i].xy.y >= topY &&
+                this.entities[i].xy.y <= bottomY) {
+                results.push(this.entities[i]);
+            }
+        }
+        return results;
     }
 }
