@@ -22,6 +22,10 @@ export default function GenerateMap(player) {
             map[x][y] = new Tile("floor");
         }
     });
+    const rooms = generator.getRooms();
+    for (var i = 0; i < rooms.length; i++) {
+        rooms[i].getDoors((x, y) => { if (ROT.RNG.getUniform() >= 0.5) { map[x][y] = new Tile("door") } })
+    }
     // Create our map from the tiles
     return new Map(map, player);
 }

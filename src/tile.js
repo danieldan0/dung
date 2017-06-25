@@ -8,5 +8,10 @@ export default class Tile extends Glyph {
         this.type = type;
         this.isWalkable = properties["isWalkable"] || false;
         this.isDiggable = properties["isDiggable"] || false;
+        this.isBumpable = false;
+        if (typeof properties.bump === 'function') {
+            this.isBumpable = true;
+            this.bump = properties["bump"];
+        }
     }
 }

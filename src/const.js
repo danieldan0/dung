@@ -1,6 +1,6 @@
 const DisplayOptions = {
     width: 80,
-    height: 25
+    height: 25 + 1 // Because we need some space to show stats
 }
 
 const MapOptions = {
@@ -22,6 +22,17 @@ const Tiles = {
         foreground: "#777",
         background: "#2e2e2e",
         isDiggable: true
+    },
+    door: {
+        chr: "+",
+        foreground: "yellow",
+        background: "#222",
+        bump: function() {
+            if (!this.isWalkable) {
+                this.isWalkable = true;
+                this.chr = "/"
+            }
+        }
     }
 }
 
