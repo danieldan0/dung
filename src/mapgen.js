@@ -2,6 +2,8 @@ import ROT from 'rot-js'
 import Map from './map'
 import {MapOptions} from './const'
 import Tile from './tile'
+import Entity from './entity'
+import {FungusTemplate, EnemyTemplate} from './entities'
 
 export default function GenerateMap(player) {
     let map = [];
@@ -27,5 +29,14 @@ export default function GenerateMap(player) {
         rooms[i].getDoors((x, y) => { if (ROT.RNG.getUniform() >= 0.5) { map[x][y] = new Tile("door") } })
     }
     // Create our map from the tiles
-    return new Map(map, player);
+    map = new Map(map, player);
+    // add the player
+    map.addEntityAtRandomPosition(player);
+    // add random fungi
+    for (let i = 0; i < 50; i++) {
+        map.addEntityAtRandomPosition(new Entity(FungusTemplate));
+    }
+    // add enemy
+    map.addEntityAtRandomPosition(new Entity(EnemyTemplate));
+    return map;
 }

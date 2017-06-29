@@ -6,6 +6,7 @@ export default class Entity extends Glyph {
         this.name = properties["name"] || "";
         this.xy = properties["xy"] || 0;
         this.map = null;
+        this.world = null;
         // Create an object which will keep track what mixins we have
         // attached to this entity based on the name property
         this.attachedMixins = {};

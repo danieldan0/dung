@@ -3,7 +3,6 @@ import XY from './xy'
 import game from './game'
 import Entity from './entity'
 import {FungusTemplate} from './entities'
-import Screen from './screens'
 import dice from 'dice.js'
 import {sendMessage, sendMessageNearby} from './msg'
 
@@ -70,6 +69,7 @@ Mixins.Destructible = {
                 // game.switchScreen(Screen.loseScreen); // Show Game Over screen
             }
             this.map.removeEntity(this);
+            this.world.updateLevel();
         }
     }
 }
@@ -159,6 +159,7 @@ Mixins.FungusActor = {
         const entity = new Entity(FungusTemplate);
         entity.xy = xyLoc;
         this.map.addEntity(entity);
+        this.world.updateLevel();
         this.growthsRemaining--;
         // Send a message nearby!
         sendMessageNearby(this.map, entity.xy,

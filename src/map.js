@@ -1,11 +1,10 @@
 import ROT from 'rot-js'
 import Tile from './tile'
 import XY from './xy'
-import Entity from './entity'
-import {FungusTemplate, EnemyTemplate} from './entities'
 
 export default class Map {
     constructor(tiles, player) {
+        this.id = null;
         this.tiles = tiles;
         // cache the width and height based
         // on the length of the dimensions of
@@ -14,17 +13,6 @@ export default class Map {
         this.height = tiles[0].length;
         // create a list which will hold the entities
         this.entities = [];
-        // create the engine and scheduler
-        this.scheduler = new ROT.Scheduler.Simple();
-        this.engine = new ROT.Engine(this.scheduler);
-        // add the player
-        this.addEntityAtRandomPosition(player);
-        // add random fungi
-        for (let i = 0; i < 50; i++) {
-            this.addEntityAtRandomPosition(new Entity(FungusTemplate));
-        }
-        // add enemy
-        this.addEntityAtRandomPosition(new Entity(EnemyTemplate));
     }
     getTile(xy) {
         // Make sure we are inside the bounds. If we aren't, return
@@ -68,11 +56,6 @@ export default class Map {
         entity.map = this;
         // Add the entity to the list of entities
         this.entities.push(entity);
-        // Check if this entity is an actor, and if so add
-        // them to the scheduler
-        if (entity.hasMixin('Actor')) {
-           this.scheduler.add(entity, true);
-        }
     }
     addEntityAtRandomPosition(entity) {
         entity.xy = this.getRandomFloorTile();
@@ -89,10 +72,6 @@ export default class Map {
                 this.entities.splice(i, 1);
                 break;
             }
-        }
-        // If the entity is an actor, remove them from the scheduler
-        if (entity.hasMixin('Actor')) {
-            this.scheduler.remove(entity);
         }
     }
     getEntitiesWithinRadius = function(centerXY, radius) {

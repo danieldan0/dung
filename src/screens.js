@@ -17,11 +17,11 @@
 
 import ROT from 'rot-js'
 import game from './game'
-import GenerateMap from './mapgen'
 import {DisplayOptions} from './const'
 import XY from './xy'
 import Entity from './entity'
 import {PlayerTemplate} from './entities'
+import World from './world'
 import sprintfjs from 'sprintf-js'
 
 const vsprintf = sprintfjs.vsprintf;
@@ -55,6 +55,7 @@ Screen.startScreen = {
 // Define our playing screen
 Screen.playScreen = {
     map: null,
+    world: null,
     player: null,
     enter: () => {
         // Keys for key handling
@@ -93,30 +94,32 @@ Screen.playScreen = {
             this.player.tryMove(newXY, this.map);
         };
         this.player = new Entity(PlayerTemplate);
-        this.map = GenerateMap(this.player);
-        this.map.engine.start();
+        this.world = new World(this.player);
+        this.world.engine.start();
         console.log("Entered play screen.");
     },
     exit: () => {
         console.log("Exited play screen.");
     },
     render: (display) => {
+        // FIXME: this.world is undefined?!
         const screenWidth = DisplayOptions.width;
         const screenHeight = DisplayOptions.height;
+        const currentLevel = this.world.currentLevel;
         // Make sure the x-axis doesn't go to the left of the left bound
         let topLeftX = Math.max(0, this.player.xy.x - (screenWidth / 2));
         // Make sure we still have enough space to fit an entire game screen
-        topLeftX = Math.floor(Math.min(topLeftX, this.map.width - screenWidth));
+        topLeftX = Math.floor(Math.min(topLeftX, currentLevel.width - screenWidth));
         // Make sure the y-axis doesn't above the top bound
         let topLeftY = Math.max(0, this.player.xy.y - (screenHeight / 2));
         // Make sure we still have enough space to fit an entire game screen
-        topLeftY = Math.floor(Math.min(topLeftY, this.map.height - screenHeight));
+        topLeftY = Math.floor(Math.min(topLeftY, currentLevel.height - screenHeight));
         // Iterate through all visible map cells
         for (let x = topLeftX; x < topLeftX + screenWidth; x++) {
             for (let y = topLeftY; y < topLeftY + screenHeight; y++) {
                 // Fetch the glyph for the tile and render it to the screen
                 // at the offset position.
-                const tile = this.map.getTile(new XY(x, y));
+                const tile = currentLevel.getTile(new XY(x, y));
                 display.draw(
                     x - topLeftX,
                     y - topLeftY - 1,
@@ -126,10 +129,10 @@ Screen.playScreen = {
             }
         }
         // Render the entities
-        const entities = this.map.entities;
+        const entities = currentLevel.entities;
         for (let i = 0; i < entities.length; i++) {
             const entity = entities[i];
-            const tile = this.map.getTile(entity.xy);
+            const tile = currentLevel.getTile(entity.xy);
             // Only render the entity if they would show up on the screen
             if (entity.xy.x >= topLeftX && entity.xy.y >= topLeftY &&
                 entity.xy.x < topLeftX + screenWidth &&
@@ -140,11 +143,13 @@ Screen.playScreen = {
                     entity.chr,
                     entity.foreground,
                     tile.background
-        );
+                );
+            }
+        }
         // Get the messages in the player's queue and render them
         const messages = this.player.messages;
         for (let i = 0; i < messages.length; i++) {
-            // Draw each message, adding the number of lines
+            // Draw each message
             display.drawText(
                 0,
                 i,
@@ -154,8 +159,6 @@ Screen.playScreen = {
         // Render player HP
         const stats = vsprintf('HP: %d/%d ', [this.player.hp, this.player.maxHp]);
         display.drawText(0, DisplayOptions.height - 1, stats);
-    }
-}
     },
     handleInput: (inputType, inputData) => {
         if (inputType === 'keydown') {
@@ -171,7 +174,7 @@ Screen.playScreen = {
             		const direction = this.keys[inputData.keyCode];
             		if (direction === -1) { // Wait 1 turn
                         // Unlock the engine
-                        this.map.engine.unlock();
+                        this.world.engine.unlock();
             			return true;
             		}
 
@@ -179,7 +182,7 @@ Screen.playScreen = {
             		this.move(new XY(dir[0], dir[1]));
 
                     // Unlock the engine
-                    this.map.engine.unlock();
+                    this.world.engine.unlock();
                 }
             }
         }
