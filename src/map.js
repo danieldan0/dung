@@ -113,4 +113,18 @@ export default class Map {
         }
         return results;
     }
+    getNeighborPositions = function(xy) {
+        let tiles = [];
+        // Generate all possible offsets
+        for (let dX = -1; dX < 2; dX ++) {
+            for (let dY = -1; dY < 2; dY++) {
+                // Make sure it isn't the same tile
+                if (dX === 0 && dY === 0) {
+                    continue;
+                }
+                tiles.push(xy.plus(new XY(dX, dY)));
+            }
+        }
+        return tiles.randomize();
+    }
 }
