@@ -2,13 +2,16 @@ import ROT from 'rot-js'
 import Screen from './screens'
 import {DisplayOptions} from './const'
 
+const DisplayWidth = DisplayOptions.width;
+const DisplayHeight = DisplayOptions.height + 1; // Because we need 1 additional line to show stats
+
 class Game {
     constructor() {
         this.currentScreen = null;
     }
     init() {
         // Initialize display
-        this.display = new ROT.Display(DisplayOptions);
+        this.display = new ROT.Display({DisplayWidth, DisplayHeight});
         // Append display to the document (HTML file)
         // This creates an <canvas> in the document
         document.body.appendChild(this.display.getContainer());

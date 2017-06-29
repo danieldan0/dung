@@ -1,6 +1,6 @@
 const DisplayOptions = {
     width: 80,
-    height: 25 + 1 // Because we need some space to show stats
+    height: 25
 }
 
 const MapOptions = {

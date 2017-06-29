@@ -119,7 +119,7 @@ Screen.playScreen = {
                 const tile = this.map.getTile(new XY(x, y));
                 display.draw(
                     x - topLeftX,
-                    y - topLeftY,
+                    y - topLeftY - 1,
                     tile.chr,
                     tile.foreground,
                     tile.background);
@@ -136,7 +136,7 @@ Screen.playScreen = {
                 entity.xy.y < topLeftY + screenHeight) {
                 display.draw(
                     entity.xy.x - topLeftX,
-                    entity.xy.y - topLeftY,
+                    entity.xy.y - topLeftY - 1,
                     entity.chr,
                     entity.foreground,
                     tile.background
