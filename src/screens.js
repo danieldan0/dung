@@ -54,7 +54,6 @@ Screen.startScreen = {
 
 // Define our playing screen
 Screen.playScreen = {
-    map: null,
     world: null,
     player: null,
     enter: () => {
@@ -91,7 +90,7 @@ Screen.playScreen = {
         this.move = (distance) => {
             const newXY = this.player.xy.plus(distance);
             // Try to move to the new cell
-            this.player.tryMove(newXY, this.map);
+            this.player.tryMove(newXY, this.world.levels[this.levelId]);
         };
         this.player = new Entity(PlayerTemplate);
         this.world = new World(this.player);

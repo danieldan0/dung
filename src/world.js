@@ -7,8 +7,8 @@ export default class World {
         this.currentLevel = null;
         this.levels = [];
         for (let i = 0; i < 20; i++) {
-            this.levels[i] = GenerateMap(player);
-            this.levels[i].id = i;
+            this.levels[i] = GenerateMap(player, i);
+            this.levels[i].world = this;
         }
         // create the engine and scheduler
         this.scheduler = new ROT.Scheduler.Simple();

@@ -68,7 +68,7 @@ Mixins.Destructible = {
                 this.map.engine.lock();
                 // game.switchScreen(Screen.loseScreen); // Show Game Over screen
             }
-            this.map.removeEntity(this);
+            this.world.levels[this.levelId].removeEntity(this);
             this.world.updateLevel();
         }
     }
@@ -112,7 +112,7 @@ Mixins.PlayerActor = {
         game.refresh();
         // Lock the engine and wait asynchronously
         // for the player to press a key.
-        this.map.engine.lock();
+        this.world.engine.lock();
         // Clear the message queue
         this.clearMessages();
     }
@@ -131,7 +131,9 @@ Mixins.FungusActor = {
             this.foreground = "goldenrod";
         }
         if (this.lifeTurns <= 0) {
-            this.map.removeEntity(this); // fungi die if they are too old
+            this.world.levels[this.levelId].removeEntity(this); // fungi die if they are too old
+            this.world.updateLevel();
+            return;
         }
         if (this.growthsRemaining <= 0 || Math.random() > 0.02) {
             return;
@@ -152,17 +154,17 @@ Mixins.FungusActor = {
 
         // Check if we can actually spawn at that location, and if so
         // then we grow!
-        if (!this.map.isEmptyFloor(xyLoc)) {
+        if (!this.world.levels[this.levelId].isEmptyFloor(xyLoc)) {
             return;
         }
 
         const entity = new Entity(FungusTemplate);
         entity.xy = xyLoc;
-        this.map.addEntity(entity);
+        this.world.levels[this.levelId].addEntity(entity);
         this.world.updateLevel();
         this.growthsRemaining--;
         // Send a message nearby!
-        sendMessageNearby(this.map, entity.xy,
+        sendMessageNearby(this.world.levels[this.levelId], entity.xy,
                           'The fungus is spreading!');
     }
 }
@@ -171,15 +173,15 @@ Mixins.EnemyActor = {
     name: 'EnemyActor',
     groupName: 'Actor',
     act: function() {
-        if (!this.map.entities[0]) {
+        if (!this.world.levels[this.levelId].entities[0]) {
             return;
         }
-        let x = this.map.entities[0].xy.x;
-        let y = this.map.entities[0].xy.y;
-        let passableCallback = (x, y) => this.map.getTile(new XY(x, y)).isWalkable;
+        let x = this.world.levels[this.levelId].entities[0].xy.x;
+        let y = this.world.levels[this.levelId].entities[0].xy.y;
+        let passableCallback = (x, y) => this.world.levels[this.levelId].getTile(new XY(x, y)).isWalkable;
         // If creature is smart and evil enough to open doors,
         // replace passableCallback with this:
-        // this.map.getTile(new XY(x, y)).type === "floor" || this.map.getTile(new XY(x, y)).type === "door"
+        // this.world.levels[this.levelId].getTile(new XY(x, y)).type === "floor" || this.world.levels[this.levelId].getTile(new XY(x, y)).type === "door"
         const astar = new ROT.Path.AStar(x, y, passableCallback);
 
         let path = [];
@@ -188,7 +190,7 @@ Mixins.EnemyActor = {
         if (typeof path[1] !== "undefined") {
             x = path[1].x;
             y = path[1].y;
-            this.tryMove(new XY(x, y), this.map);
+            this.tryMove(new XY(x, y), this.world.levels[this.levelId]);
         }
     }
 }

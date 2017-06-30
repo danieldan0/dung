@@ -5,7 +5,7 @@ import Tile from './tile'
 import Entity from './entity'
 import {FungusTemplate, EnemyTemplate} from './entities'
 
-export default function GenerateMap(player) {
+export default function GenerateMap(player, id) {
     let map = [];
     for (let x = 0; x < MapOptions.width; x++) {
         // Create the nested array for the y values
@@ -30,6 +30,7 @@ export default function GenerateMap(player) {
     }
     // Create our map from the tiles
     map = new Map(map, player);
+    map.id = id;
     // add the player
     map.addEntityAtRandomPosition(player);
     // add random fungi

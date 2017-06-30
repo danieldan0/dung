@@ -5,6 +5,7 @@ import XY from './xy'
 export default class Map {
     constructor(tiles, player) {
         this.id = null;
+        this.world = null;
         this.tiles = tiles;
         // cache the width and height based
         // on the length of the dimensions of
@@ -52,8 +53,8 @@ export default class Map {
         if (!this.isInBounds(entity.xy)) {
             throw new Error('Adding entity out of bounds.');
         }
-        // Update the entity's map
-        entity.map = this;
+        // Update the entity's levelId
+        entity.levelId = this.id;
         // Add the entity to the list of entities
         this.entities.push(entity);
     }
@@ -70,6 +71,7 @@ export default class Map {
         for (let i = 0; i < this.entities.length; i++) {
             if (this.entities[i] === entity) {
                 this.entities.splice(i, 1);
+                entity.levelId = null;
                 break;
             }
         }
