@@ -95,6 +95,7 @@ Screen.playScreen = {
         };
         this.player = new Entity(PlayerTemplate);
         this.world = new World(this.player);
+        this.world.switchLevel(0);
         this.world.engine.start();
         console.log("Entered play screen.");
     },
@@ -102,7 +103,6 @@ Screen.playScreen = {
         console.log("Exited play screen.");
     },
     render: (display) => {
-        // FIXME: this.world is undefined?!
         const screenWidth = DisplayOptions.width;
         const screenHeight = DisplayOptions.height;
         const currentLevel = this.world.currentLevel;

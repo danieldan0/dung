@@ -13,8 +13,6 @@ export default class World {
         // create the engine and scheduler
         this.scheduler = new ROT.Scheduler.Simple();
         this.engine = new ROT.Engine(this.scheduler);
-
-        this.switchMap(this.levels[0]);
     }
     switchLevel(levelId) {
         // remove old beings from the scheduler
