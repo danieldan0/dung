@@ -22,11 +22,10 @@ export default class World {
         // refresh screen
         game.refresh();
         // add new beings to the scheduler
-		const entities = this.currentLevel.entities;
-		for (let p in entities) {
-            p.world = this;
-            if (p.hasMixin("Actor")) {
-    			this.scheduler.add(entities[p], true);
+		for (let i = 0; i < this.currentLevel.entities[i].length; i++) {
+            this.currentLevel.entities[i].world = this;
+            if (this.currentLevel.entities[i].hasMixin("Actor")) {
+    			this.scheduler.add(this.currentLevel.entities[i], true);
             }
         }
     }
